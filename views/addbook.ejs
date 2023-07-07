@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add a Book</title>
+  <link rel="stylesheet" href="/addb.css">
+</head>
+<body>
+<div class="container">
+  <h1>Add a Book</h1>
+  <form method="POST" action="/prac/add_book" class="tt" id="myForm">
+    <fieldset><input type="text" id="title" name="title" required placeholder="Book Title"><br><br></fieldset>
+    <fieldset><input type="text" id="author" name="author" required placeholder="Book Author"><br><br></fieldset>
+    <fieldset><input type="text" id="id" name="collegeId" required placeholder="College Id"><br><br></fieldset>
+    <fieldset><input type="text" id="course" name="course" required placeholder="Course Name"><br><br></fieldset>
+    <fieldset><input type="number" id="year" name="year" required placeholder="Course Year"><br><br></fieldset>
+    <fieldset><input type="number" id="number" name="number" required placeholder="Your Contact No"><br><br></fieldset>
+    <input type="submit" value="Submit" class="c">
+  </form>
+</div>
+<script>
+  document.getElementById("myForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    var form = event.target;
+    var formData = new FormData(form);
+
+    var data = {};
+    formData.forEach(function (value, key) {
+      data[key] = value;
+    });
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", form.action);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        window.location.href = "/prac/"; // Redirect to home page on success
+      } else {
+        var response = JSON.parse(xhr.responseText);
+        alert(response.message);
+      }
+    };
+    xhr.send(JSON.stringify(data));
+  });
+</script>
+</body>
+</html>
