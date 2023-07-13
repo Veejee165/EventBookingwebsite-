@@ -1,0 +1,12 @@
+<div class="event-details">
+    <h2>{{ event.title }}</h2>
+    <p>{{ event.description }}</p>
+    <p>Venue: {{ event.venue }}</p>
+    <p>Location: {{ event.city }}, {{ event.state }}, {{ event.country }}</p>
+    <p>Date: {{ event.start_date | date }} - {{ event.end_date | date }}</p>
+    <p>Time: {{ event.start_time }} - {{ event.end_time }}</p>
+    <p>Ticket Price: ${{ event.ticket_price }}</p>
+    <p>Ticket Quantity: {{ event.ticket_quantity }}</p>
+    <button (click)="goToBookingForm()">Book Now</button>
+  </div>
+  

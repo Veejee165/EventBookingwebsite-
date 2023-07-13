@@ -1,0 +1,52 @@
+<div class="user-profile">
+    <h2>User Profile</h2>
+  
+    <div class="user-info">
+      <h3>{{ user.username }}</h3>
+      <p>Email: {{ user.email }}</p>
+    </div>
+  
+    <h4>Upcoming Bookings</h4>
+    <div *ngIf="upcomingBookings.length > 0; else noUpcomingBookings">
+      <ul>
+        <li *ngFor="let booking of upcomingBookings">
+          <div class="booking-item">
+            <div class="booking-details">
+              <h5>{{ booking.event.title }}</h5>
+              <p>Date: {{ booking.event.start_date}}</p>
+              <p>Time: {{ booking.event.start_time }} - {{ booking.event.end_time }}</p>
+            </div>
+            <div class="booking-actions">
+              <button (click)="cancelBooking(booking._id)">Cancel</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noUpcomingBookings>
+      <p>No upcoming bookings.</p>
+    </ng-template>
+  
+    <h4>Past Bookings</h4>
+    <div *ngIf="pastBookings.length > 0; else noPastBookings">
+      <ul>
+        <li *ngFor="let booking of pastBookings">
+          <div class="booking-item">
+            <div class="booking-details">
+              <h5>{{ booking.event.title }}</h5>
+              <p>Date: {{ booking.event.start_date}}</p>
+              <p>Time: {{ booking.event.start_time }} - {{ booking.event.end_time }}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noPastBookings>
+      <p>No past bookings.</p>
+    </ng-template>
+  
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+  </div>
+  

@@ -1,16 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
+const userDBUri = 'mongodb+srv://vedant:165%40Deepali@usercluster.szehesc.mongodb.net/UserDB?retryWrites=true&w=majority';
 const connectDb = async () => {
   try {
-    const connect = await mongoose.connect(process.env.CONNECTION);
-    console.log(
-      "Database connected: ",
-      connect.connection.host,
-      connect.connection.name
-    );
-  } catch (err) {
-    console.log(err);
-    process.exit(1);
+    await mongoose.connect(userDBUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log('Connected to userdb');
+  } catch (error) {
+    console.error('Failed to connect to databases:', error);
   }
 };
 

@@ -1,0 +1,29 @@
+<div class="home">
+    <h2>Welcome to the Event Booking Website</h2>
+    <p>Discover and book exciting events near you.</p>
+  
+    <div class="search-bar">
+      <input type="text" [(ngModel)]="searchEventName" placeholder="Search by event name">
+      <input type="text" [(ngModel)]="searchLocation" placeholder="Filter by location">
+      <button (click)="searchEvents()">Search</button>
+    </div>
+  
+    <div class="event-list">
+      <h3>Upcoming Events</h3>
+      <div *ngFor="let event of filteredEvents" (click)="goToEventDetails(event._id)">
+        <h4>{{ event.title }}</h4>
+        <p>{{ event.description }}</p>
+        <p>Date: {{ event.start_date | date }}</p>
+        <p>Time: {{ event.start_time }} - {{ event.end_time }}</p>
+        <p>Location: {{ event.city }}, {{ event.state }}, {{ event.country }}</p>
+      </div>
+      <div *ngIf="filteredEvents.length === 0">
+        <p>No upcoming events found.</p>
+      </div>
+    </div>
+    <div *ngIf="loggedIn" class="logged-in-message">
+        Logged in as {{ username }}
+      </div>
+      <button *ngIf="loggedIn" (click)="goToUserProfile()">Go to Profile</button>
+  </div>
+  
