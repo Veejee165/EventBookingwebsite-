@@ -33,10 +33,10 @@ export class AddBookComponent {
       number: Number(formData.get('number'))
     };
 
-    this.http.post('/prac/add_book', data)
+    this.http.post('/api/add_book', data)
       .subscribe(
         () => {
-          window.location.href = '/prac/'; // Redirect to home page on success
+          window.location.href = 'http://localhost:4200/'; // Redirect to home page on success
         },
         (error) => {
           console.error('Error submitting form:', error);

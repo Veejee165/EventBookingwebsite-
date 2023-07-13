@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { Router } from 'express';
+
 
 @Component({
   selector: 'app-home',
@@ -16,7 +16,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {}
 
   searchBooks(): void {
-    // Your searchBooks() method logic here
     window.location.href = '/search-results'
   }
 }
