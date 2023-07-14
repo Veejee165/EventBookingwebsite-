@@ -7,7 +7,7 @@ import { EventService } from './event-service.service';
   providedIn: 'root'
 })
 export class BookingService {
-  private baseUrl = 'api/bookings'; 
+  private baseUrl = '/prac/bookings/';
 
   constructor(private http: HttpClient, private eventService: EventService) {}
 
@@ -17,14 +17,14 @@ export class BookingService {
   }
 
   // Create a booking
-  createBooking(user: string, event: string, quantity: number): Observable<any> {
-    const booking = { user, event, quantity }; // Create the booking object with required properties
-
+  createBooking(user: any, event: any, quantity: number): Observable<any> {
+    const booking = { user: user._id, event: event._id, quantity }; // Create the booking object with required properties
+  
     return new Observable((observer) => {
       this.http.post<any>(this.baseUrl, booking).subscribe(
         (response) => {
           // Lower the quantity of the event by the quantity of the booking
-          this.eventService.updateEventQuantity(event, -quantity).subscribe(
+          this.eventService.updateEventQuantity(event._id, -quantity).subscribe(
             () => {
               observer.next(response);
               observer.complete();

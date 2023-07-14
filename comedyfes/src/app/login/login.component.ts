@@ -17,9 +17,7 @@ export class LoginComponent {
     if (this.username && this.password) {
       this.authService.login(this.username, this.password).subscribe(
         (response: any) => {
-          this.router.navigate(['/home']);
-          const user = { username: 'example', email: 'example@example.com' };
-          this.authService.setCurrentUser(user);
+          this.router.navigate(['/']);
         },
         (error: any) => {
           // Handle login error, such as displaying an error message

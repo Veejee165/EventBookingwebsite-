@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class EventService {
-  private baseUrl = '/api/events';
+  private baseUrl = '/prac/events';
 
   constructor(private http: HttpClient) {}
 

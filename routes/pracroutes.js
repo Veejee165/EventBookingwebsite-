@@ -5,6 +5,7 @@ const eventController = require('../controllers/eventController');
 const bookingController = require('../controllers/bookingController');
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
+const authMiddleware = require('../middleware/authenticate');
 
 // Authentication routes
 router.route('/auth/register').post(authController.register);
@@ -38,5 +39,6 @@ router.route('/users/:id')
   .get(userController.getUserById)
   .put(userController.updateUser)
   .delete(userController.deleteUser);
+router.route('/current-user').get(authMiddleware.authenticate, userController.getCurrentUser);
 
 module.exports = router;

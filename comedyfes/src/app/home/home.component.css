@@ -1,0 +1,93 @@
+body {
+  background-color: #333;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+nav {
+  background-color: #f5f5f5;
+  padding-bottom: 0.5%;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+}
+
+li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+  padding: 2px;
+  display: inline-block;
+}
+
+a:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.auth-buttons {
+  margin-left: auto;
+}
+
+.background-image {
+  background-image: url('../../assets/pexels-teddy-yang-2263436.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+  height: calc(40vh + 40px); /* Added to include the rounded corner spacing */
+  position: relative;
+  margin-bottom: -40px; /* Added to overlap the black background */
+  z-index: -1; /* Set a lower stacking order */
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.search-bar input,
+.search-bar button {
+  margin: 5px;
+  width: 300px;
+  height: 30px;
+  font-size: 16px;
+}
+
+.content {
+  flex: 1;
+  background-color: rgba(18,20,15,0.95);
+  color: #fff;
+  padding: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.event-list {
+  margin-top: 20px;
+}
+
+.event-list h3 {
+  margin-top: 0;
+}

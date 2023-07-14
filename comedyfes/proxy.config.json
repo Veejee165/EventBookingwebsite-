@@ -1,5 +1,5 @@
 {
-    "/api/*": {
+    "/prac/*": {
       "target": "http://localhost:5001",
       "secure": false,
     "pathRewrite": {

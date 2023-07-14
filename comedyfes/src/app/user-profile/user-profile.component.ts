@@ -16,7 +16,7 @@ export class UserProfileComponent implements OnInit {
   constructor(private bookingService: BookingService, private authService: AuthService) {}
 
   ngOnInit() {
-    this.user = this.authService.getCurrentUser();
+    this.user = this.authService.getUser();
     this.fetchUserBookings();
   }
 

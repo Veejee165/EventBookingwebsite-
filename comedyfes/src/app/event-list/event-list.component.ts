@@ -34,6 +34,6 @@ export class EventListComponent implements OnInit {
   
 
   goToEventDetails(eventId: string) {
-    this.router.navigate(['/event', eventId]);
+    this.router.navigate(['/events', eventId]);
   }
 }

@@ -4,14 +4,14 @@
 <form (ngSubmit)="submitBookingForm()" #bookingForm="ngForm">
 
   <!-- Display event details -->
-  <h3>{{ event.title }}</h3>
-  <p>Date: {{ event.start_date | date }}</p>
-  <p>Time: {{ event.start_time }} - {{ event.end_time }}</p>
-  <p>Venue: {{ event.venue }}</p>
-  <p>City: {{ event.city }}</p>
-  <p>State: {{ event.state }}</p>
-  <p>Country: {{ event.country }}</p>
-  <p>Price: ${{ event.ticket_price }}</p>
+  <h3>{{ event?.title }}</h3>
+  <p>Date: {{ event?.start_date | date }}</p>
+  <p>Time: {{ event?.start_time }} - {{ event?.end_time }}</p>
+  <p>Venue: {{ event?.venue }}</p>
+  <p>City: {{ event?.city }}</p>
+  <p>State: {{ event?.state }}</p>
+  <p>Country: {{ event?.country }}</p>
+  <p>Price: ${{ event?.ticket_price }}</p>
 
   <!-- Booking details -->
   <div>
@@ -23,3 +23,4 @@
   <button type="submit" [disabled]="bookingForm.invalid">Book Now</button>
 
 </form>
+<div *ngIf="!booking.user">You must be logged in to book.</div>

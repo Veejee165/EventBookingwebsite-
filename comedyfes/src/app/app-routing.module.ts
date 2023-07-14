@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'events', component: EventListComponent },
   { path: 'events/:id', component: EventDetailsComponent },
-  { path: 'bookings/:eventId', component: BookingFormComponent },
+  { path: 'booking/:eventId', component: BookingFormComponent },
   { path: 'profile', component: UserProfileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

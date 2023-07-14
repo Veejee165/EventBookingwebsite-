@@ -6,10 +6,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = '/api'; 
+  private apiUrl = '/prac'; 
   private currentUser: any;
 
   constructor(private http: HttpClient) {}
+
+  getCurrentUser(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/auth/current-user`);
+  }
 
   login(username: string, password: string): Observable<any> {
     const url = `${this.apiUrl}/auth/login`;
@@ -36,12 +40,12 @@ export class AuthService {
     const url = `${this.apiUrl}/${userId}`;
     return this.http.delete(url);
   }
-  setCurrentUser(user: any) {
+ 
+  setUser(user: any) {
     this.currentUser = user;
   }
 
-  // Get the current user
-  getCurrentUser() {
+  getUser() {
     return this.currentUser;
   }
   isLoggedIn(){

@@ -23,7 +23,6 @@ export class RegisterComponent {
           this.authService.login(this.username, this.password).subscribe(
             (response: any) => {
               const user = { username: this.username };
-              this.authService.setCurrentUser(user);
               this.router.navigate(['/home']);
             },
             (error: any) => {

@@ -55,6 +55,6 @@ export class HomeComponent implements OnInit {
 
   goToUserProfile() {
     // Assuming the user profile route is '/user-profile', navigate to it
-    this.router.navigate(['/user-profile']);
+    this.router.navigate(['/profile']);
   }
 }

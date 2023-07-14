@@ -1,13 +1,25 @@
-<div class="home">
-    <h2>Welcome to the Event Booking Website</h2>
-    <p>Discover and book exciting events near you.</p>
-  
+<div class="container">
+  <nav>
+    <ul>
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/events">Events</a></li>
+      <li *ngIf="loggedIn" class="auth-buttons">
+        <span>You are logged in as {{ username }}</span>
+        <button (click)="goToUserProfile()">Go to Profile</button>
+      </li>
+      <li class="auth-buttons" *ngIf="!loggedIn">
+        <a routerLink="/login">Log in</a>
+        <a routerLink="/register">Register</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="background-image"></div>
+  <div class="content">
     <div class="search-bar">
       <input type="text" [(ngModel)]="searchEventName" placeholder="Search by event name">
       <input type="text" [(ngModel)]="searchLocation" placeholder="Filter by location">
       <button (click)="searchEvents()">Search</button>
     </div>
-  
     <div class="event-list">
       <h3>Upcoming Events</h3>
       <div *ngFor="let event of filteredEvents" (click)="goToEventDetails(event._id)">
@@ -21,9 +33,5 @@
         <p>No upcoming events found.</p>
       </div>
     </div>
-    <div *ngIf="loggedIn" class="logged-in-message">
-        Logged in as {{ username }}
-      </div>
-      <button *ngIf="loggedIn" (click)="goToUserProfile()">Go to Profile</button>
   </div>
-  
+</div>
