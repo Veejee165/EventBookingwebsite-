@@ -1,11 +1,10 @@
 {
-    "/prac/*": {
-      "target": "http://localhost:5001",
-      "secure": false,
+  "/prac/*": {
+    "target": "http://localhost:5001",
+    "secure": false,
     "pathRewrite": {
-      "^/api": ""
+      "^/prac": ""
     },
     "changeOrigin": true
   }
-    }
-  
+}

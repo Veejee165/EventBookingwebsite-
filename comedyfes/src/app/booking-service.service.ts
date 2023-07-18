@@ -7,7 +7,7 @@ import { EventService } from './event-service.service';
   providedIn: 'root'
 })
 export class BookingService {
-  private baseUrl = '/prac/bookings/';
+  private baseUrl = '/prac/bookings';
 
   constructor(private http: HttpClient, private eventService: EventService) {}
 

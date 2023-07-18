@@ -7,8 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class EventService {
-  private baseUrl = '/prac/events';
-
+  private baseUrl = '/prac/events'; 
   constructor(private http: HttpClient) {}
 
   // Get all events
@@ -36,11 +35,5 @@ export class EventService {
     const url = `${this.baseUrl}/${eventId}/quantity`;
     const payload = { quantity: quantity };
     return this.http.patch<any>(url, payload);
-  }
-
-  // Delete an event
-  deleteEvent(eventId: string): Observable<any> {
-    const url = `${this.baseUrl}/${eventId}`;
-    return this.http.delete<any>(url);
   }
 }

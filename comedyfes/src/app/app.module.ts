@@ -9,7 +9,6 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { AdminComponent } from './admin/admin.component';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -24,8 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     UserProfileComponent,
     BookingFormComponent,
     LoginComponent,
-    RegisterComponent,
-    AdminComponent
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

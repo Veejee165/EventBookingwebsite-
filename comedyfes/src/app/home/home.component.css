@@ -46,7 +46,7 @@ a:hover {
 }
 
 .background-image {
-  background-image: url('../../assets/pexels-teddy-yang-2263436.jpg');
+  /* background-image: url('../../assets/pexels-teddy-yang-2263436.jpg'); */
   background-size: cover;
   background-position: center;
   filter: blur(2px);
@@ -77,8 +77,9 @@ a:hover {
 
 .content {
   flex: 1;
-  background-color: rgba(18,20,15,0.95);
-  color: #fff;
+  background-color:whitesmoke;
+  /* background-color: rgba(18,20,15,0.95); */
+  color:black;
   padding: 20px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;

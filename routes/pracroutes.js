@@ -40,5 +40,5 @@ router.route('/users/:id')
   .put(userController.updateUser)
   .delete(userController.deleteUser);
 router.route('/current-user').get(authMiddleware.authenticate, userController.getCurrentUser);
-
+router.route('/users/all').get(userController.getAllUsers);
 module.exports = router;

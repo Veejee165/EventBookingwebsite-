@@ -1,47 +1,6 @@
 <h2>Welcome to Admin Dashboard</h2>
 
-<!-- Example: Display a list of events -->
-<div *ngIf="events.length > 0">
-  <h3>Events List</h3>
-  <ul>
-    <li *ngFor="let event of events">
-      <h4>{{ event.title }}</h4>
-      <p>Description: {{ event.description }}</p>
-      <p>Venue: {{ event.venue }}</p>
-      <p>Date: {{ event.start_date | date }}</p>
-      <p>Time: {{ event.start_time }} - {{ event.end_time }}</p>
-      <p>Price: ${{ event.ticket_price }}</p>
-      <p>Quantity: {{ event.ticket_quantity }}</p>
-      <button (click)="deleteEvent(event._id)">Delete</button>
-    </li>
-  </ul>
-</div>
+<!-- Manage Events -->
 
-<!-- Example: Manage Bookings -->
-<div>
-  <h3>Manage Bookings</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Booking ID</th>
-        <th>User</th>
-        <th>Event</th>
-        <th>Quantity</th>
-        <th>Total Price</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let booking of bookings">
-        <td>{{ booking._id }}</td>
-        <td>{{ booking.user.name }}</td>
-        <td>{{ booking.event.title }}</td>
-        <td>{{ booking.quantity }}</td>
-        <td>{{ booking.total_price }}</td>
-        <td>
-          <button (click)="deleteBooking(booking._id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<!-- Manage Bookings -->
+
