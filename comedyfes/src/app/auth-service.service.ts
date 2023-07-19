@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = '/prac'; 
+  private apiUrl = 'http://localhost:5001/prac'; 
   private currentUser: any;
 
   constructor(private http: HttpClient) {}
 
   getCurrentUser(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/auth/current-user`);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+    const options = { headers: headers };
+    return this.http.get(`${this.apiUrl}/current-user`, options);
   }
+  
 
   login(username: string, password: string): Observable<any> {
     const url = `${this.apiUrl}/auth/login`;
@@ -40,20 +45,11 @@ export class AuthService {
     const url = `${this.apiUrl}/${userId}`;
     return this.http.delete(url);
   }
- 
-  setUser(user: any) {
-    this.currentUser = user;
-  }
 
   getUser() {
     return this.currentUser;
   }
-  isLoggedIn(){
-    if(this.currentUser)
-      return true;
-    return false;
-  }
   getUsername(){
-    return this.currentUser.username;
+    return this.currentUser.username
   }
 }

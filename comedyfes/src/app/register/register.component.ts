@@ -23,6 +23,7 @@ export class RegisterComponent {
           this.authService.login(this.username, this.password).subscribe(
             (response: any) => {
               const user = { username: this.username };
+              localStorage.setItem('token', response.token); 
               this.router.navigate(['/home']);
             },
             (error: any) => {

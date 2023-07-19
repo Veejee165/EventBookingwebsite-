@@ -25,18 +25,20 @@ exports.getEventById = async (req, res) => {
 };
 // Create a new event (accessible to admins only)
 exports.createEvent = async (req, res) => {
-  const { title, description, venue, start_date, end_date, start_time, end_time, ticket_price, ticket_quantity } = req.body;
-
+  const { title, description, venue,city,state,country, start_date, end_date, start_time, end_time, ticket_price, ticket_quantity } = req.body;
   // Check if the user is an admin
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ error: 'Access denied' });
-  }
+  // if (req.user.role !== 'admin') {
+  //   return res.status(403).json({ error: 'Access denied' });
+  // }
 
   try {
     const event = await Event.create({
       title,
       description,
       venue,
+      city,
+      state,
+      country,
       start_date,
       end_date,
       start_time,
@@ -54,12 +56,14 @@ exports.createEvent = async (req, res) => {
 // Update an event (accessible to admins only)
 exports.updateEvent = async (req, res) => {
   const { id } = req.params;
-  const updates = req.body;
+  const updates = { $inc: { ticket_quantity: req.body.ticket_quantity } };
+
+
 
   // Check if the user is an admin
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ error: 'Access denied' });
-  }
+  // if (req.user.role !== 'admin') {
+  //   return res.status(403).json({ error: 'Access denied' });
+  // }
 
   try {
     const event = await Event.findByIdAndUpdate(id, updates, { new: true });

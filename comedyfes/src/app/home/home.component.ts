@@ -29,11 +29,13 @@ export class HomeComponent implements OnInit {
       (events: any[]) => {
         this.upcomingEvents = events;
         this.filteredEvents = this.upcomingEvents;
+      
       },
       (error: any) => {
         console.error('Error fetching upcoming events:', error);
       }
     );
+
   }
 
   searchEvents() {
@@ -48,9 +50,15 @@ export class HomeComponent implements OnInit {
   goToEventDetails(eventId: string) {
     this.router.navigate(['/event-details', eventId]);
   }
+
   checkLoginStatus() {
-    // Use the AuthService to check the login status
-    this.loggedIn = this.authservice.isLoggedIn()?this.username = this.authservice.getUsername():this.loggedIn=false;
+    this.authservice.getCurrentUser().subscribe((response: any) => {
+      console.log(response)
+      this.username = response.username
+      this.loggedIn = true
+    },
+    (error: any) => {
+    })
   }
 
   goToUserProfile() {

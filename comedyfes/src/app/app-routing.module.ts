@@ -9,6 +9,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'events', component: EventListComponent },

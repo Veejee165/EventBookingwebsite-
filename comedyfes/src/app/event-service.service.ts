@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class EventService {
-  private baseUrl = '/prac/events'; 
+  private baseUrl = 'http://localhost:5001/prac/events'; 
   constructor(private http: HttpClient) {}
 
   // Get all events
@@ -32,8 +32,8 @@ export class EventService {
 
   // Update event quantity
   updateEventQuantity(eventId: string, quantity: number): Observable<any> {
-    const url = `${this.baseUrl}/${eventId}/quantity`;
-    const payload = { quantity: quantity };
-    return this.http.patch<any>(url, payload);
+    const url = `${this.baseUrl}/${eventId}`;
+    const payload = { ticket_quantity: -quantity };
+    return this.http.put<any>(url, payload);
   }
 }

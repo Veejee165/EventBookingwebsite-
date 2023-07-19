@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../booking-service.service';
 import { AuthService } from '../auth-service.service';
+import { EventService } from '../event-service.service';
+import { forkJoin, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-profile',
@@ -12,31 +15,73 @@ export class UserProfileComponent implements OnInit {
   upcomingBookings: any[] = [];
   pastBookings: any[] = [];
   successMessage: string = '';
+  activeTab: string = 'upcoming';
+  showPastEvents: boolean = false; // Add this line to define the property
 
-  constructor(private bookingService: BookingService, private authService: AuthService) {}
+  constructor(private bookingService: BookingService, private authService: AuthService, private eventService: EventService) { }
 
   ngOnInit() {
-    this.user = this.authService.getUser();
-    this.fetchUserBookings();
+    this.authService.getCurrentUser().subscribe(
+      (response: any) => {
+        console.log(response);
+        this.user = response;
+        this.fetchUserBookings();
+      },
+      (error: any) => {
+        console.error('Failed to retrieve user:', error);
+      }
+    );
+  }
+  
+  changeTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  getUser() {
+    this.authService.getCurrentUser().subscribe((response: any) => {
+      console.log(response);
+      this.user = response;
+    },
+      (error: any) => {
+      });
   }
 
   fetchUserBookings() {
     const userId = this.user._id;
     this.bookingService.getUserBookings(userId).subscribe(
-      (response: any) => {
+      (bookings: any[]) => {
         const today = new Date();
-        const bookings = response;
+        const upcomingBookings: any[] = [];
+        const pastBookings: any[] = [];
 
-        this.upcomingBookings = bookings.filter((booking: any) =>
-          new Date(booking.event.start_date) >= today && booking.status === 'active'
-        );
+        // Iterate through the bookings array
+        for (const booking of bookings) {
+          const eventId = booking.event;
 
-        this.pastBookings = bookings.filter((booking: any) =>
-          new Date(booking.event.start_date) < today || booking.status === 'past'
-        );
+          // Retrieve event details for the current booking
+          this.eventService.getEventById(eventId).subscribe(
+            (eventResponse: any) => {
+              const eventStartDate = new Date(eventResponse.start_date);
+
+              if (eventStartDate >= today) {
+                // Add to upcoming bookings if event start date is in the future
+                upcomingBookings.push({ booking, event: eventResponse });
+              } else {
+                // Add to past bookings if event start date is in the past
+                pastBookings.push({ booking, event: eventResponse });
+              }
+            },
+            (error: any) => {
+              console.error('Failed to retrieve event:', error);
+            }
+          );
+        }
+
+        this.upcomingBookings = upcomingBookings;
+        this.pastBookings = pastBookings;
       },
       (error: any) => {
-        // Handle error
+        console.error('Failed to retrieve user bookings:', error);
       }
     );
   }

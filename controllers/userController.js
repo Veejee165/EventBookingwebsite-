@@ -82,9 +82,10 @@ exports.getCurrentUser = async (req, res) => {
 };
 exports.getAllUsers = async (req,res) => {
   try {
-    const users = await User.find();
+    const users = await User.find({});
+    console.json(users)
     res.json(users);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve users' });
+    res.status(500).json({ error: error });
   }
 }

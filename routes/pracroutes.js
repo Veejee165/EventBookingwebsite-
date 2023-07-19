@@ -13,8 +13,10 @@ router.route('/auth/login').post(authController.login);
 
 // Event routes
 router.route('/events')
-  .get(eventController.getAllEvents)
+.get(eventController.getAllEvents)
   .post(eventController.createEvent);
+
+// .get(eventController.getAllEvents)
 
 router.route('/events/:id')
   .get(eventController.getEventById)
@@ -39,6 +41,6 @@ router.route('/users/:id')
   .get(userController.getUserById)
   .put(userController.updateUser)
   .delete(userController.deleteUser);
-router.route('/current-user').get(authMiddleware.authenticate, userController.getCurrentUser);
 router.route('/users/all').get(userController.getAllUsers);
+router.route('/current-user').get(authMiddleware.authenticate, userController.getCurrentUser);
 module.exports = router;

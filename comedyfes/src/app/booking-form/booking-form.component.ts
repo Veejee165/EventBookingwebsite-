@@ -8,12 +8,13 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-booking-form',
   templateUrl: './booking-form.component.html',
+  styleUrls: ['./booking-form.component.css']
 })
 export class BookingFormComponent implements OnInit {
   eventId!: string;
   event: any;
-  user: any;
   booking: any = {};
+  showTick: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,43 +35,47 @@ export class BookingFormComponent implements OnInit {
     this.getEvent();
     this.getUser();
   }
+
   getUser() {
-    this.authService.getCurrentUser().subscribe(
-      (user: any) => {
-        this.booking.user = user;
-      },
-      (error: any) => {
-        console.error('Failed to fetch current user:', error);
-      }
-    );
+    this.authService.getCurrentUser().subscribe((response: any) => {
+      console.log(response);
+      this.booking.user = response;
+    },
+    (error: any) => {
+    });
   }
+
   getEvent() {
     this.eventService.getEventById(this.eventId).subscribe(
       (response: any) => {
         this.event = response;
+        this.booking.event = response;
       },
       (error: any) => {
         console.error('Failed to fetch event details:', error);
       }
     );
   }
+
   submitBookingForm() {
     const { user, event, quantity } = this.booking;
-    
     if (!user) {
       this.router.navigate(['/login']);
       return;
     }
-    else{
+
     this.bookingService.createBooking(user, event, quantity).subscribe(
       (response) => {
         console.log('Booking created:', response);
-        // Reset the booking form
+        this.showTick = true;
+        setTimeout(() => {
+          this.showTick = false;
+          this.router.navigate(['/']); // Replace '/' with the desired home page route
+        }, 3000);
       },
       (error) => {
         console.error('Failed to create booking:', error);
       }
     );
   }
-}
 }

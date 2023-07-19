@@ -7,7 +7,7 @@ import { EventService } from './event-service.service';
   providedIn: 'root'
 })
 export class BookingService {
-  private baseUrl = '/prac/bookings';
+  private baseUrl = 'http://localhost:5001/prac/bookings';
 
   constructor(private http: HttpClient, private eventService: EventService) {}
 
@@ -24,7 +24,7 @@ export class BookingService {
       this.http.post<any>(this.baseUrl, booking).subscribe(
         (response) => {
           // Lower the quantity of the event by the quantity of the booking
-          this.eventService.updateEventQuantity(event._id, -quantity).subscribe(
+          this.eventService.updateEventQuantity(event._id, quantity).subscribe(
             () => {
               observer.next(response);
               observer.complete();
