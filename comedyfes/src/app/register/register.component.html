@@ -1,19 +1,51 @@
-<div class="register">
-    <h2>Register</h2>
-    <form (ngSubmit)="register()">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" [(ngModel)]="username" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" required>
-      </div>
-      <button type="submit">Register</button>
-    </form>
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <form class="login100-form validate-form" (ngSubmit)="register()">
+        <span class="login100-form-title p-b-26">
+          Register
+        </span>
+        <span class="login100-form-title p-b-48">
+          <i class="zmdi zmdi-font"></i>
+        </span>
+
+        <div class="wrap-input100 validate-input" data-validate="Valid username is required">
+          <input class="input100" type="text" name="username" [(ngModel)]="username" required>
+          <span class="focus-input100" data-placeholder="Username"></span>
+        </div>
+
+        <div class="wrap-input100 validate-input" data-validate="Valid password is required">
+          <span class="btn-show-pass">
+            <i class="zmdi zmdi-eye"></i>
+          </span>
+          <input class="input100" type="password" name="password" [(ngModel)]="password" required>
+          <span class="focus-input100" data-placeholder="Password"></span>
+        </div>
+
+        <div class="wrap-input100 validate-input" data-validate="Valid email is required">
+          <input class="input100" type="email" name="email" [(ngModel)]="email" required>
+          <span class="focus-input100" data-placeholder="Email"></span>
+        </div>
+
+        <div class="container-login100-form-btn">
+          <div class="wrap-login100-form-btn">
+            <div class="login100-form-bgbtn"></div>
+            <button class="login100-form-btn">
+              Register
+            </button>
+          </div>
+        </div>
+
+        <div class="text-center p-t-115">
+          <span class="txt1">
+            Already have an account?
+          </span>
+
+          <a class="txt2" routerLink="/login">
+            Log in
+          </a>
+        </div>
+      </form>
+    </div>
   </div>
-  
+</div>

@@ -6,6 +6,7 @@ const bookingController = require('../controllers/bookingController');
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authenticate');
+const emailController = require('../controllers/emailController');
 
 // Authentication routes
 router.route('/auth/register').post(authController.register);
@@ -43,4 +44,10 @@ router.route('/users/:id')
   .delete(userController.deleteUser);
 router.route('/users/all').get(userController.getAllUsers);
 router.route('/current-user').get(authMiddleware.authenticate, userController.getCurrentUser);
+router.route('/users/find/:email').get(userController.getUserByMail)
+
+//Email routes 
+router.route('/email').post(emailController.sendEmail);
+router.route('/reset-password').get(authMiddleware.authenticate,userController.updateUser);
+
 module.exports = router;

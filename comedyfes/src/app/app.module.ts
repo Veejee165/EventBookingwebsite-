@@ -12,7 +12,9 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-
+import { PasswordRecoveryComponent } from './password-recovery/password-recovery.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -23,13 +25,16 @@ import { HttpClientModule } from '@angular/common/http';
     UserProfileComponent,
     BookingFormComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PasswordRecoveryComponent,
+    PasswordResetComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

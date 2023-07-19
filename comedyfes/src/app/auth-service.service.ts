@@ -32,17 +32,17 @@ export class AuthService {
     return this.http.post(url, body);
   }
   getUserById(userId: string): Observable<any> {
-    const url = `${this.apiUrl}/${userId}`;
+    const url = `${this.apiUrl}/users/${userId}`;
     return this.http.get(url);
   }
 
   updateUser(userId: string, userData: any): Observable<any> {
-    const url = `${this.apiUrl}/${userId}`;
+    const url = `${this.apiUrl}/users/${userId}`;
     return this.http.put(url, userData);
   }
 
   deleteUser(userId: string): Observable<any> {
-    const url = `${this.apiUrl}/${userId}`;
+    const url = `${this.apiUrl}/users/${userId}`;
     return this.http.delete(url);
   }
 
@@ -52,4 +52,15 @@ export class AuthService {
   getUsername(){
     return this.currentUser.username
   }
+  getUserbyMail(mail: string): Observable<any>{
+    const url = `${this.apiUrl}/users/find/${mail}`
+    return this.http.get(url);
+  }
+  resetPassword(password:string):Observable<any>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+    const options = { headers: headers };
+    const url = `${this.apiUrl}/reset-password`;
+    return this.http.post(url, password, options);
+}
 }
