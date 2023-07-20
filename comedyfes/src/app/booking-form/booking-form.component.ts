@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Inject, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EventService } from '../event-service.service';
 import { BookingService } from '../booking-service.service';
 import { AuthService } from '../auth-service.service';
 import { Router } from '@angular/router';
+import { CouponServiceService } from '../coupon-service.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -11,48 +12,67 @@ import { Router } from '@angular/router';
   styleUrls: ['./booking-form.component.css']
 })
 export class BookingFormComponent implements OnInit {
-  eventId!: string;
-  event: any;
-  booking: any = {};
+  @Input() event: any;
+  @Input() user: any;
+  @Output() closePopup = new EventEmitter<boolean>();
+
+  booking: any = {
+    quantity: 0,
+    couponCode: ''
+  };
+  totalPrice: number = 0;
   showTick: boolean = false;
 
   constructor(
-    private route: ActivatedRoute,
+    public dialogRef: MatDialogRef<BookingFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private eventService: EventService,
     private bookingService: BookingService,
     private authService: AuthService,
-    private router: Router
-  ) {
-    this.booking = {
-      user: null,
-      event: null,
-      quantity: 0
-    };
-  }
+    private router: Router,
+    private couponService: CouponServiceService
+  ) {}
 
   ngOnInit() {
-    this.eventId = this.route.snapshot.paramMap.get('eventId') || ''; 
-    this.getEvent();
-    this.getUser();
+    this.event = this.data.event;
+    this.user = this.data.user;
+    this.calculateTotalPrice();
   }
 
-  getUser() {
-    this.authService.getCurrentUser().subscribe((response: any) => {
-      console.log(response);
-      this.booking.user = response;
-    },
-    (error: any) => {
-    });
+  updateQuantity() {
+    this.calculateTotalPrice();
   }
 
-  getEvent() {
-    this.eventService.getEventById(this.eventId).subscribe(
+  calculateTotalPrice() {
+    const quantity = this.booking.quantity;
+    const price = this.event.ticket_price;
+    const discount = this.event.discount || 0; // Assuming the discount is provided in the event data
+
+    // Calculate the total price after applying the discount
+    this.totalPrice = quantity * price - (quantity * price * discount) / 100;
+  }
+
+  applyCoupon() {
+    if (!this.booking.couponCode) {
+      return;
+    }
+
+    // Call the CouponService to check the coupon validity and get the discount amount
+    // Assuming the CouponService method is named `checkCouponValidity()`
+    this.couponService.checkCouponValidity(this.booking.couponCode).subscribe(
       (response: any) => {
-        this.event = response;
-        this.booking.event = response;
+        if (response.valid) {
+          // Apply the discount to the booking
+          this.event.discount = response.discount;
+          this.calculateTotalPrice();
+        } else {
+          // Handle invalid coupon code
+          // Show an error message or take appropriate action
+        }
       },
       (error: any) => {
-        console.error('Failed to fetch event details:', error);
+        console.error('Failed to check coupon validity:', error);
+        // Handle error
       }
     );
   }
@@ -70,7 +90,8 @@ export class BookingFormComponent implements OnInit {
         this.showTick = true;
         setTimeout(() => {
           this.showTick = false;
-          this.router.navigate(['/']); // Replace '/' with the desired home page route
+          this.dialogRef.close();
+          this.router.navigate(['/profile']); // Replace '/profile' with the desired profile page route
         }, 3000);
       },
       (error) => {

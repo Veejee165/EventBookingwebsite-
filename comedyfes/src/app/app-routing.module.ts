@@ -15,13 +15,13 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'events', component: EventListComponent },
   { path: 'events/:id', component: EventDetailsComponent },
-  { path: 'booking/:eventId', component: BookingFormComponent },
+  { path: 'booking-form', component: BookingFormComponent },
   { path: 'profile', component: UserProfileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'recovery-mail', component: PasswordRecoveryComponent },
-  { path: 'reset-password/:token', component: PasswordResetComponent }
-  
+  { path: 'reset-password/token=:token', component: PasswordResetComponent },
+
   // Add additional routes as needed
 ];
 

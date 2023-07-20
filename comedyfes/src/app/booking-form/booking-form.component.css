@@ -1,34 +1,74 @@
-/* .green-tick {
+/* Merged Booking Form Styling */
+.booking-form {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100px;
-    background-image: url('../../assets/greentick.png');
-    background-size: cover;
-    animation: tickAnimation 3s ease-in-out forwards;
-} */
-
-.wrapper {
-    height: 100vh;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: none;
+  }
+  
+  .booking-form.show {
+    display: block;
+  }
+  
+  .booking-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .booking-form .form-group {
     display: flex;
-    justify-content: center;
     align-items: center;
-    background-color: #eee
-}
-
-.checkmark__circle {
-    stroke-dasharray: 166;
-    stroke-dashoffset: 166;
-    stroke-width: 2;
-    stroke-miterlimit: 10;
-    stroke: #7ac142;
-    fill: none;
-    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards
-}
-
-.checkmark {
+    margin-bottom: 15px;
+  }
+  
+  .booking-form .form-group label {
+    flex: 0 0 120px;
+    font-weight: bold;
+  }
+  
+  .booking-form .form-group input[type="number"],
+  .booking-form .form-group input[type="text"] {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .booking-form .total-price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .booking-form .btn-book-now {
+    margin-top: 20px;
+  }
+  
+  /* Booking Confirmation Styling */
+  .booking-confirmation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 128, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 18px;
+    animation: confirmationAnimation 3s ease-in-out forwards;
+    display: none;
+    z-index: 9999;
+  }
+  
+  .booking-confirmation.show {
+    display: block;
+  }
+  
+  .checkmark {
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -38,76 +78,102 @@
     stroke-miterlimit: 10;
     margin: 10% auto;
     box-shadow: inset 0px 0px 0px #7ac142;
-    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both
-}
-
-.checkmark__check {
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+  }
+  
+  .checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #7ac142;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  }
+  
+  .checkmark__check {
     transform-origin: 50% 50%;
     stroke-dasharray: 48;
     stroke-dashoffset: 48;
-    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards
-}
-
-@keyframes stroke {
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+  }
+  
+  @keyframes stroke {
     100% {
-        stroke-dashoffset: 0
+      stroke-dashoffset: 0;
     }
-}
-
-@keyframes scale {
-
-    0%,
-    100% {
-        transform: none
+  }
+  
+  @keyframes scale {
+    0%, 100% {
+      transform: none;
     }
-
     50% {
-        transform: scale3d(1.1, 1.1, 1)
+      transform: scale3d(1.1, 1.1, 1);
     }
-}
-
-@keyframes fill {
+  }
+  
+  @keyframes fill {
     100% {
-        box-shadow: inset 0px 0px 0px 30px #7ac142
+      box-shadow: inset 0px 0px 0px 30px #7ac142;
     }
-}
-
-.booking-confirmation {
+  }
+  
+  @keyframes confirmationAnimation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Background Overlay */
+  .booking-form-overlay {
     position: fixed;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 128, 0, 0.8);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    display: none;
+  }
+  
+  /* New Booking Form Styling */
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    flex: 0 0 120px;
+    font-weight: bold;
+  }
+  
+  .form-group input[type="number"],
+  .form-group input[type="text"] {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .total-price {
     font-size: 18px;
-    animation: confirmationAnimation 3s ease-in-out forwards;
-}
-
-/* @keyframes tickAnimation {
-    0% {
-        transform: translate(-50%, -50%) scale(0);
-        opacity: 0;
-    }
-
-    50% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-} */
-
-@keyframes confirmationAnimation {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .btn-book-now {
+    margin-top: 20px;
+  }
+    /* Styles for the custom dialog */
+.booking-dialog {
+    /* Add your custom styles here */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    backdrop-filter: blur(10px); /* Adjust the blur strength as needed */
+  
+  }

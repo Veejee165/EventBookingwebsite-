@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EventService } from '../event-service.service';
-import { DatePipe } from '@angular/common';
-
+import { BookingFormComponent } from '../booking-form/booking-form.component';
+import { AuthService } from '../auth-service.service';
+import {MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-event-details',
@@ -12,16 +13,29 @@ import { DatePipe } from '@angular/common';
 export class EventDetailsComponent implements OnInit {
   eventId!: string;
   event: any;
+  user: any;
+  isBookingFormOpen: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.eventId = this.route.snapshot.paramMap.get('id') || '';
     this.getEventDetails();
+
+    // Subscribe to get the user object
+    this.authService.getCurrentUser().subscribe(
+      (user) => {
+        this.user = user;
+      },
+      (error) => {
+        console.error('Failed to get current user:', error);
+      }
+    );
   }
 
   getEventDetails() {
@@ -35,7 +49,20 @@ export class EventDetailsComponent implements OnInit {
     );
   }
 
-  goToBookingForm() {
-    this.router.navigate(['/booking', this.eventId]);
+  openBookingDialog(): void {
+    this.isBookingFormOpen = true; // Open the booking form
+    const dialogRef = this.dialog.open(BookingFormComponent, {
+      width: '500px', // Adjust the width as needed
+      panelClass: 'booking-dialog',
+      data: {
+        event: this.event,
+        user: this.user
+      }
+    });
+
+    // Subscribe to the afterClosed event to handle the dialog close action
+    dialogRef.afterClosed().subscribe((result) => {
+      this.isBookingFormOpen = false; // Set the flag to close the dialog
+    });
   }
 }

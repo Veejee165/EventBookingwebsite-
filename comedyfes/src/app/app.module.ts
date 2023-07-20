@@ -15,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { PasswordRecoveryComponent } from './password-recovery/password-recovery.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    MatDialogModule,
+    BrowserAnimationsModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

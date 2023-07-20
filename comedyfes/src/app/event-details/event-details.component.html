@@ -7,6 +7,19 @@
     <p>Time: {{ event?.start_time }} - {{ event?.end_time }}</p>
     <p>Ticket Price: ${{ event?.ticket_price }}</p>
     <p>Ticket Quantity: {{ event?.ticket_quantity }}</p>
-    <button (click)="goToBookingForm()">Book Now</button>
+    <ng-container *ngIf="user; else loginLink">
+      <!-- Display the book now button only if the user is logged in -->
+      <button mat-raised-button color="primary" (click)="openBookingDialog()">Book Now</button>
+    </ng-container>
+    
+    <!-- If the user is not logged in, show a link to the login page -->
+    <ng-template #loginLink>
+      <p>You need to be logged in to book this event. Please <a routerLink="/login">Login</a> or <a routerLink="/signup">Sign Up</a></p>
+    </ng-template>
+    
+    <!-- Use *ngIf with user and also check if bookingFormOpen -->
+    <app-booking-form *ngIf="isBookingFormOpen" [event]="event" [user]="user"></app-booking-form>
+
   </div>
+  
   

@@ -1,38 +1,26 @@
-<h2>Booking Form</h2>
-
-<!-- Green tick animation -->
-<div class="wrapper" *ngIf="showTick"> <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"> <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/> <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-</svg>
-</div>
-<!-- Booking created confirmation message -->
-<div *ngIf="showTick" class="booking-confirmation">
-  <i class="fa fa-check-circle"></i>
-  Booking created successfully!
-</div>
-
-<!-- Form for booking tickets -->
-<form (ngSubmit)="submitBookingForm()" #bookingForm="ngForm">
-
-  <!-- Display event details -->
-  <h3>{{ event?.title }}</h3>
-  <p>Date: {{ event?.start_date | date }}</p>
-  <p>Time: {{ event?.start_time }} - {{ event?.end_time }}</p>
-  <p>Venue: {{ event?.venue }}</p>
-  <p>City: {{ event?.city }}</p>
-  <p>State: {{ event?.state }}</p>
-  <p>Country: {{ event?.country }}</p>
-  <p>Price: ${{ event?.ticket_price }}</p>
-
-  <!-- Booking details -->
-  <div>
+<!-- Booking Form -->
+<div class="booking-form">
+  <h2>Booking Form</h2>
+  <div class="form-group">
     <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" name="quantity" [(ngModel)]="booking.quantity" required>
+    <input type="number" id="quantity" [(ngModel)]="booking.quantity" (input)="calculateTotalPrice()">
   </div>
+  <div class="form-group">
+    <label for="couponCode">Coupon Code:</label>
+    <input type="text" id="couponCode" [(ngModel)]="booking.couponCode">
+    <button class="btn-apply-coupon" (click)="applyCoupon()">Apply</button>
+  </div>
+  <div class="total-price">
+    Total Price: {{ totalPrice | currency }}
+  </div>
+  <button class="btn-book-now" (click)="submitBookingForm()">Book Now</button>
+</div>
 
-  <!-- Submit button -->
-  <button type="submit" [disabled]="bookingForm.invalid">Book Now</button>
-
-</form>
-
-<!-- Message for users not logged in -->
-<div *ngIf="!booking.user">You must be logged in to book.</div>
+<!-- Booking Confirmation -->
+<div class="booking-confirmation" *ngIf="showTick">
+  <div class="checkmark">
+    <div class="checkmark__circle"></div>
+    <div class="checkmark__check"></div>
+  </div>
+  Booking Confirmed!
+</div>
