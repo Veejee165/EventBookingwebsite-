@@ -52,7 +52,11 @@ const eventSchema = new mongoose.Schema({
   admin_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }
+  },
+  image: {
+    data: Buffer, 
+    contentType: String, 
+  },
 });
 
 const Event = mongoose.model('Event', eventSchema);

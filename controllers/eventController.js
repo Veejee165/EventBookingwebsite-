@@ -1,14 +1,20 @@
 const Event = require('../models/eventmodel');
+const multer = require('multer');
+
+// Set up the multer middleware to handle image uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Get all events
 exports.getAllEvents = async (req, res) => {
   try {
-    const events = await Event.find();
+    const events = await Event.find({}, { 'image.data': 0 }); // Exclude image data
     res.json(events);
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve events' });
   }
 };
+
 
 // Get event by ID
 exports.getEventById = async (req, res) => {
@@ -23,16 +29,19 @@ exports.getEventById = async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve event' });
   }
 };
+
 // Create a new event (accessible to admins only)
 exports.createEvent = async (req, res) => {
-  const { title, description, venue,city,state,country, start_date, end_date, start_time, end_time, ticket_price, ticket_quantity } = req.body;
+  const { title, description, venue, city, state, country, start_date, end_date, start_time, end_time, ticket_price, ticket_quantity } = req.body;
+  const image = req.file; // The uploaded image file
+
   // Check if the user is an admin
   // if (req.user.role !== 'admin') {
   //   return res.status(403).json({ error: 'Access denied' });
   // }
 
   try {
-    const event = await Event.create({
+    const newEvent = new Event({
       title,
       description,
       venue,
@@ -47,7 +56,14 @@ exports.createEvent = async (req, res) => {
       ticket_quantity
     });
 
-    res.status(201).json(event);
+    // If an image was uploaded, store the image data in the database
+    if (image) {
+      newEvent.image.data = image.buffer;
+      newEvent.image.contentType = image.mimetype;
+    }
+
+    await newEvent.save();
+    res.status(201).json(newEvent);
   } catch (error) {
     res.status(400).json({ error: 'Failed to create event' });
   }
@@ -93,5 +109,22 @@ exports.deleteEvent = async (req, res) => {
     res.json({ message: 'Event deleted successfully' });
   } catch (error) {
     res.status(400).json({ error: 'Failed to delete event' });
+  }
+};
+exports.getEventImageById = async (req, res, next) => {
+  try {
+    const eventId = req.params.eventId;
+    const event = await Event.findById(eventId);
+
+    if (!event || !event.image || !event.image.contentType || !event.image.data) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    // Set the appropriate content type for the image (assuming it's stored as 'image/jpeg')
+    res.set('Content-Type', event.image.contentType);
+    res.send(event.image.data);
+  } catch (error) {
+    console.error('Error retrieving event image:', error);
+    res.status(500).json({ error: 'Failed to retrieve image' });
   }
 };

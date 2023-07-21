@@ -1,55 +1,60 @@
-/* Merged Booking Form Styling */
-.booking-form {
+/* Styles for the custom dialog */
+.booking-dialog {
+    /* Add your custom styles here */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    backdrop-filter: blur(10px); /* Adjust the blur strength as needed */
+
+    /* Merged Booking Form Styling */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 9999;
-    display: none;
-  }
-  
-  .booking-form.show {
-    display: block;
-  }
-  
-  .booking-form h2 {
+}
+
+.booking-dialog h2 {
     font-size: 24px;
     margin-bottom: 20px;
-  }
-  
-  .booking-form .form-group {
+}
+
+.booking-dialog .form-group {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
-  }
-  
-  .booking-form .form-group label {
+}
+
+.booking-dialog .form-group label {
     flex: 0 0 120px;
     font-weight: bold;
-  }
-  
-  .booking-form .form-group input[type="number"],
-  .booking-form .form-group input[type="text"] {
+}
+
+.booking-dialog .form-group input[type="number"],
+.booking-dialog .form-group input[type="text"] {
     flex: 1;
     margin-right: 10px;
-  }
-  
-  .booking-form .total-price {
+    max-width: 200px; /* Limit the max-width of the input elements */
+}
+
+.booking-dialog .total-price {
     font-size: 18px;
     font-weight: bold;
     margin-top: 20px;
-  }
-  
-  .booking-form .btn-book-now {
+}
+
+.booking-dialog .btn-book-now {
     margin-top: 20px;
-  }
-  
-  /* Booking Confirmation Styling */
-  .booking-confirmation {
+}
+
+/* Booking Confirmation Styling */
+.booking-confirmation {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -62,13 +67,13 @@
     animation: confirmationAnimation 3s ease-in-out forwards;
     display: none;
     z-index: 9999;
-  }
-  
-  .booking-confirmation.show {
+}
+
+.booking-confirmation.show {
     display: block;
-  }
-  
-  .checkmark {
+}
+
+.checkmark {
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -79,9 +84,9 @@
     margin: 10% auto;
     box-shadow: inset 0px 0px 0px #7ac142;
     animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
-  }
-  
-  .checkmark__circle {
+}
+
+.checkmark__circle {
     stroke-dasharray: 166;
     stroke-dashoffset: 166;
     stroke-width: 2;
@@ -89,47 +94,47 @@
     stroke: #7ac142;
     fill: none;
     animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-  }
-  
-  .checkmark__check {
+}
+
+.checkmark__check {
     transform-origin: 50% 50%;
     stroke-dasharray: 48;
     stroke-dashoffset: 48;
     animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
-  }
-  
-  @keyframes stroke {
+}
+
+@keyframes stroke {
     100% {
-      stroke-dashoffset: 0;
+        stroke-dashoffset: 0;
     }
-  }
-  
-  @keyframes scale {
+}
+
+@keyframes scale {
     0%, 100% {
-      transform: none;
+        transform: none;
     }
     50% {
-      transform: scale3d(1.1, 1.1, 1);
+        transform: scale3d(1.1, 1.1, 1);
     }
-  }
-  
-  @keyframes fill {
+}
+
+@keyframes fill {
     100% {
-      box-shadow: inset 0px 0px 0px 30px #7ac142;
+        box-shadow: inset 0px 0px 0px 30px #7ac142;
     }
-  }
-  
-  @keyframes confirmationAnimation {
+}
+
+@keyframes confirmationAnimation {
     0% {
-      opacity: 0;
+        opacity: 0;
     }
     100% {
-      opacity: 1;
+        opacity: 1;
     }
-  }
-  
-  /* Background Overlay */
-  .booking-form-overlay {
+}
+
+/* Background Overlay */
+.booking-form-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -138,42 +143,5 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 9998;
     display: none;
-  }
-  
-  /* New Booking Form Styling */
-  .form-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    flex: 0 0 120px;
-    font-weight: bold;
-  }
-  
-  .form-group input[type="number"],
-  .form-group input[type="text"] {
-    flex: 1;
-    margin-right: 10px;
-  }
-  
-  .total-price {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 20px;
-  }
-  
-  .btn-book-now {
-    margin-top: 20px;
-  }
-    /* Styles for the custom dialog */
-.booking-dialog {
-    /* Add your custom styles here */
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 20px;
     backdrop-filter: blur(10px); /* Adjust the blur strength as needed */
-  
-  }
+}

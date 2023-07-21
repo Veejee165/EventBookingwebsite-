@@ -1,10 +1,11 @@
-import { Component, Inject, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../event-service.service';
 import { BookingService } from '../booking-service.service';
 import { AuthService } from '../auth-service.service';
 import { Router } from '@angular/router';
 import { CouponServiceService } from '../coupon-service.service';
+import { EmailService } from '../email-service.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -14,6 +15,7 @@ import { CouponServiceService } from '../coupon-service.service';
 export class BookingFormComponent implements OnInit {
   @Input() event: any;
   @Input() user: any;
+  public modalRef!: NgbModalRef;
   @Output() closePopup = new EventEmitter<boolean>();
 
   booking: any = {
@@ -22,20 +24,18 @@ export class BookingFormComponent implements OnInit {
   };
   totalPrice: number = 0;
   showTick: boolean = false;
+  couponId: any;
 
   constructor(
-    public dialogRef: MatDialogRef<BookingFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private eventService: EventService,
     private bookingService: BookingService,
     private authService: AuthService,
     private router: Router,
-    private couponService: CouponServiceService
+    private couponService: CouponServiceService,
+    private emailService :EmailService
   ) {}
 
   ngOnInit() {
-    this.event = this.data.event;
-    this.user = this.data.user;
     this.calculateTotalPrice();
   }
 
@@ -63,6 +63,7 @@ export class BookingFormComponent implements OnInit {
       (response: any) => {
         if (response.valid) {
           // Apply the discount to the booking
+          this.couponId = response._id;
           this.event.discount = response.discount;
           this.calculateTotalPrice();
         } else {
@@ -76,6 +77,18 @@ export class BookingFormComponent implements OnInit {
       }
     );
   }
+  sendOrderByEmail(bookingId: string) {
+    const email = this.user.email
+    const subject = 'Order Confirmation';
+    const body = `Your Booking has been confirmed for the event ${this.event.title}`;
+  
+    this.emailService.sendEmail(email, subject, body, bookingId).subscribe(
+      (response: any) => {
+      },
+      (error: any) => {
+      }
+    );
+  }
 
   submitBookingForm() {
     const { user, event, quantity } = this.booking;
@@ -86,11 +99,22 @@ export class BookingFormComponent implements OnInit {
 
     this.bookingService.createBooking(user, event, quantity).subscribe(
       (response) => {
+        this.couponService.updateUserCount(this.couponId).subscribe(
+          (response) => {
+            console.log('User count updated successfully:', response);
+            // Optionally, you can perform other actions after updating the user count
+          },
+          (error) => {
+            console.error('Failed to update user count:', error);
+            // Handle the error if needed
+          }
+        );
+        this.sendOrderByEmail(this.booking._id);
         console.log('Booking created:', response);
         this.showTick = true;
         setTimeout(() => {
           this.showTick = false;
-          this.dialogRef.close();
+          this.closePopup.emit(true); // Emit the event to close the popup
           this.router.navigate(['/profile']); // Replace '/profile' with the desired profile page route
         }, 3000);
       },

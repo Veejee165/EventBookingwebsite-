@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -7,8 +7,9 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class EventService {
-  private baseUrl = 'http://localhost:5001/prac/events'; 
-  constructor(private http: HttpClient) {}
+  private baseUrl = 'http://localhost:5001/prac/events';
+
+  constructor(private http: HttpClient) { }
 
   // Get all events
   getAllEvents(): Observable<any> {
@@ -35,5 +36,11 @@ export class EventService {
     const url = `${this.baseUrl}/${eventId}`;
     const payload = { ticket_quantity: -quantity };
     return this.http.put<any>(url, payload);
+  }
+
+  getEventImageById(eventId: string): Observable<Blob> {
+    const url = `${this.baseUrl}/image/${eventId}`;
+    const headers = new HttpHeaders({ 'Content-Type': 'image/jpeg' });
+    return this.http.get(url, { headers, responseType: 'blob' });
   }
 }

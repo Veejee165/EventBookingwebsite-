@@ -1,13 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventService } from '../event-service.service';
 import { AuthService } from '../auth-service.service';
 import { DatePipe } from '@angular/common';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import DomSanitizer
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class HomeComponent implements OnInit {
   searchEventName: string = '';
@@ -17,7 +22,7 @@ export class HomeComponent implements OnInit {
   loggedIn: boolean = false;
   username: string = '';
 
-  constructor(private router: Router, private eventService: EventService, private authservice:AuthService) {}
+  constructor(private router: Router, private eventService: EventService, private authservice:AuthService, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     this.getUpcomingEvents();
@@ -29,7 +34,9 @@ export class HomeComponent implements OnInit {
       (events: any[]) => {
         this.upcomingEvents = events;
         this.filteredEvents = this.upcomingEvents;
-      
+        this.filteredEvents.forEach(event => {
+          this.retrieveImage(event);
+        });
       },
       (error: any) => {
         console.error('Error fetching upcoming events:', error);
@@ -64,5 +71,17 @@ export class HomeComponent implements OnInit {
   goToUserProfile() {
     // Assuming the user profile route is '/user-profile', navigate to it
     this.router.navigate(['/profile']);
+ 
+  }
+  retrieveImage(event: any) {
+    this.eventService.getEventImageById(event._id).subscribe(
+      (imageBlob: Blob) => {
+        const imageUrl = URL.createObjectURL(imageBlob);
+        event.image = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+      },
+      (error: any) => {
+        console.error('Failed to retrieve event image:', error);
+      }
+    );
   }
 }

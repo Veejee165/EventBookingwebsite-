@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 
 const jwtSecret = process.env.JWT; // Replace with your own secret key for JWT
 
-exports.sendEmail = async (req, res) => {
+exports.sendResetEmail = async (req, res) => {
   const { to, subject, body } = req.body;
   const userId = req.userId; // Retrieve the userId from the request object
 
@@ -43,3 +43,38 @@ exports.sendEmail = async (req, res) => {
     res.status(500).json({ error: 'Failed to send email' });
   }
 };
+exports.sendOrderEmail = async (req, res) => {
+    const { to, subject, body } = req.body;
+    const orderId = req.orderId;
+
+    // Create a Nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'f20210190@dubai.bits-pilani.ac.in',
+        pass: process.env.Password
+      }
+    });
+  
+    // Define the email options
+    const mailOptions = {
+      from: 'your-email@example.com',
+      to,
+      subject,
+      html: `
+        <p>YOur Order has been Confirmed with order ID ${orderId}</p>
+      `
+    };
+  
+    try {
+      // Send the email
+      await transporter.sendMail(mailOptions);
+      res.json({ message: 'Email sent successfully' });
+    } catch (error) {
+      console.error('Error sending email:', error);
+      res.status(500).json({ error: 'Failed to send email' });
+    }
+  };
+  

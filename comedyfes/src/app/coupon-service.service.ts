@@ -23,7 +23,10 @@ export class CouponServiceService {
   }
 
   checkCouponValidity(couponCode: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/checkValidity`, { couponCode });
+    return this.http.post<any>(`${this.apiUrl}/check-validity`, { couponCode });
+  }
+  updateUserCount(couponCode: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/user-count`,couponCode);
   }
 
 }

@@ -1,5 +1,5 @@
-<!-- Booking Form -->
-<div class="booking-form">
+<div class="booking-form-overlay"></div>
+<div class="booking-dialog">
   <h2>Booking Form</h2>
   <div class="form-group">
     <label for="quantity">Quantity:</label>
@@ -8,12 +8,12 @@
   <div class="form-group">
     <label for="couponCode">Coupon Code:</label>
     <input type="text" id="couponCode" [(ngModel)]="booking.couponCode">
-    <button class="btn-apply-coupon" (click)="applyCoupon()">Apply</button>
+    <button class="btn btn-primary" (click)="applyCoupon()">Apply</button>
   </div>
   <div class="total-price">
     Total Price: {{ totalPrice | currency }}
   </div>
-  <button class="btn-book-now" (click)="submitBookingForm()">Book Now</button>
+  <button class="btn btn-success btn-book-now" (click)="submitBookingForm()">Book Now</button>
 </div>
 
 <!-- Booking Confirmation -->

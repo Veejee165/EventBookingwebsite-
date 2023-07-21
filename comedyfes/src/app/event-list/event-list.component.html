@@ -1,16 +1,20 @@
 <div class="event-list">
-    <h2>Upcoming Events</h2>
-    <div *ngIf="events.length > 0; else noEvents">
-      <div class="event-item" *ngFor="let event of events">
-        <h3>{{ event.title }}</h3>
-        <p>{{ event.description }}</p>
-        <p>Date: {{ event.start_date | date }}</p>
-        <p>Time: {{ event.start_time }} - {{ event.end_time }}</p>
-        <button (click)="goToEventDetails(event._id)">View Details</button>
-      </div>
+  <h2>Upcoming Events</h2>
+  <div *ngIf="events.length > 0; else noEvents">
+    <div class="event-item" *ngFor="let event of events">
+      <h3>{{ event.title }}</h3>
+      <p>{{ event.description }}</p>
+      <p>Date: {{ event.start_date | date }}</p>
+      <p>Time: {{ event.start_time }} - {{ event.end_time }}</p>
+      <!-- Display the image if available -->
+      <td>
+        <!-- Use the safe URL for the image source -->
+        <img [src]="event.image" alt="Event Image" height="50">
+      </td>
+      <button (click)="goToEventDetails(event._id)">View Details</button>
     </div>
-    <ng-template #noEvents>
-      <p>No events found.</p>
-    </ng-template>
   </div>
-  
+  <ng-template #noEvents>
+    <p>No events found.</p>
+  </ng-template>
+</div>

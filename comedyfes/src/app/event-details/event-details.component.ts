@@ -1,68 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModal and NgbModalRef
 import { EventService } from '../event-service.service';
-import { BookingFormComponent } from '../booking-form/booking-form.component';
 import { AuthService } from '../auth-service.service';
-import {MatDialog } from '@angular/material/dialog';
+import { BookingFormComponent } from '../booking-form/booking-form.component';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import DomSanitizer
 
 @Component({
   selector: 'app-event-details',
   templateUrl: './event-details.component.html',
   styleUrls: ['./event-details.component.css']
 })
+@Injectable({
+  providedIn: 'root',
+})
 export class EventDetailsComponent implements OnInit {
-  eventId!: string;
   event: any;
   user: any;
-  isBookingFormOpen: boolean = false;
+  modalRef!: NgbModalRef; // Add the ! modifier to mark it as definitely assigned
 
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
-    private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService: NgbModal,
+    private sanitizer: DomSanitizer // Inject the NgbModal service
   ) {}
 
   ngOnInit() {
-    this.eventId = this.route.snapshot.paramMap.get('id') || '';
-    this.getEventDetails();
-
-    // Subscribe to get the user object
-    this.authService.getCurrentUser().subscribe(
-      (user) => {
-        this.user = user;
-      },
-      (error) => {
-        console.error('Failed to get current user:', error);
-      }
-    );
-  }
-
-  getEventDetails() {
-    this.eventService.getEventById(this.eventId).subscribe(
-      (event) => {
+    this.route.params.subscribe(params => {
+      const eventId = params['id'];
+      this.eventService.getEventById(eventId).subscribe(event => {
         this.event = event;
-      },
-      (error) => {
-        console.error('Failed to fetch event details:', error);
-      }
-    );
+        this.retrieveImage(event);
+      });
+    });
+
+    this.authService.getCurrentUser().subscribe(user => {
+      this.user = user;
+    });
   }
 
-  openBookingDialog(): void {
-    this.isBookingFormOpen = true; // Open the booking form
-    const dialogRef = this.dialog.open(BookingFormComponent, {
-      width: '500px', // Adjust the width as needed
-      panelClass: 'booking-dialog',
-      data: {
-        event: this.event,
-        user: this.user
+  openBookingDialog() {
+    // Open the modal and set the component properties
+    const modalRef = this.modalService.open(BookingFormComponent, { centered: true });
+    modalRef.componentInstance.event = this.event; // Pass the event data to the modal
+    modalRef.componentInstance.user = this.user; // Pass the user data to the modal
+
+    // Subscribe to the closePopup event emitted by the BookingFormComponent
+    modalRef.componentInstance.closePopup.subscribe((closed: boolean) => {
+      if (closed) {
+        modalRef.close(); // Close the modal when closePopup is emitted
       }
     });
-
-    // Subscribe to the afterClosed event to handle the dialog close action
-    dialogRef.afterClosed().subscribe((result) => {
-      this.isBookingFormOpen = false; // Set the flag to close the dialog
-    });
+  }
+  retrieveImage(event: any) {
+    this.eventService.getEventImageById(event._id).subscribe(
+      (imageBlob: Blob) => {
+        const imageUrl = URL.createObjectURL(imageBlob);
+        event.image = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+      },
+      (error: any) => {
+        console.error('Failed to retrieve event image:', error);
+      }
+    );
   }
 }

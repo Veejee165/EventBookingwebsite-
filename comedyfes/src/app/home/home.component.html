@@ -28,10 +28,13 @@
         <p>Date: {{ event.start_date | date }}</p>
         <p>Time: {{ event.start_time }} - {{ event.end_time }}</p>
         <p>Location: {{ event.city }}, {{ event.state }}, {{ event.country }}</p>
+        <td>
+          <!-- Use the safe URL for the image source -->
+          <img [src]="event.image" alt="Event Image" height="50">
+        </td>
       </div>
       <div *ngIf="filteredEvents.length === 0">
         <p>No upcoming events found.</p>
       </div>
     </div>
   </div>
-</div>

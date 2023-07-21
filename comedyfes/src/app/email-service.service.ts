@@ -19,4 +19,13 @@ export class EmailService {
 
     return this.http.post(this.emailApiUrl, emailData,userId);
   }
+  sendOrderEmail(to: string, subject: string, body: string, bookingId:any): Observable<any> {
+    const emailData = {
+      to,
+      subject,
+      body
+    };
+
+    return this.http.post(`${this.emailApiUrl}/order`, emailData,bookingId);
+  }
 }
