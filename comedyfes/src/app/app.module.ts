@@ -17,6 +17,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NavbarComponent } from './navbar/navbar.component';
+import { DefaultComponent } from './default/default.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel'; // Import the ngx-slick-carousel module
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     RegisterComponent,
     PasswordRecoveryComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    NavbarComponent,
+    DefaultComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +43,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     NgbModule,
     MatDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SlickCarouselModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

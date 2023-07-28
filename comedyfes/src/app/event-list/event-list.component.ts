@@ -1,5 +1,5 @@
 import { Component, OnInit,Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../event-service.service';
 import { DatePipe } from '@angular/common';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import DomSanitizer
@@ -15,11 +15,20 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import Dom
 })
 export class EventListComponent implements OnInit {
   events: any[] = [];
+  searchEventName: string = '';
+  searchLocation: string = '';
+  searchEventCategory : string = '';
+  categories: string[] = ['Comedy', 'Drama', 'Movie', 'Concert']; // Add available categories
+  filteredEvents : any[] = [];
 
-  constructor(private router: Router, private eventService: EventService,private sanitizer: DomSanitizer) {}
+  constructor(private router: Router, private eventService: EventService,private sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute ) {}
 
   ngOnInit() {
     this.getUpcomingEvents();
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.searchEventCategory = params['category'] || '';
+      this.searchEvents();
+    });
   }
 
   getUpcomingEvents() {
@@ -33,6 +42,7 @@ export class EventListComponent implements OnInit {
         this.events.forEach(event => {
           this.retrieveImage(event);
         });
+        this.filteredEvents = this.events.slice();
       },
       (error) => {
         console.error('Failed to fetch upcoming events:', error);
@@ -54,5 +64,14 @@ export class EventListComponent implements OnInit {
         console.error('Failed to retrieve event image:', error);
       }
     );
+  }
+    searchEvents() {
+    this.filteredEvents = this.events?.filter((event) =>
+      event.title.toLowerCase().includes(this.searchEventName.toLowerCase()) &&
+      (this.searchEventCategory === '' || event.category.toLowerCase().includes(this.searchEventCategory.toLowerCase()))&&
+      (event.city.toLowerCase().includes(this.searchLocation.toLowerCase()) ||
+        event.state.toLowerCase().includes(this.searchLocation.toLowerCase()) ||
+        event.country.toLowerCase().includes(this.searchLocation.toLowerCase()))
+    ) || [];
   }
 }

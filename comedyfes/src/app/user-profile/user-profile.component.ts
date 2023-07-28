@@ -1,102 +1,125 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BookingService } from '../booking-service.service';
 import { AuthService } from '../auth-service.service';
 import { EventService } from '../event-service.service';
-import { forkJoin, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { switchMap, map, takeUntil, catchError } from 'rxjs/operators';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
   user: any;
   upcomingBookings: any[] = [];
   pastBookings: any[] = [];
   successMessage: string = '';
-  activeTab: string = 'upcoming';
-  showPastEvents: boolean = false; // Add this line to define the property
+  showPastEvents: boolean = false;
+  private unsubscribe$ = new Subject<void>();
 
-  constructor(private bookingService: BookingService, private authService: AuthService, private eventService: EventService) { }
+  constructor(
+    private bookingService: BookingService,
+    private authService: AuthService,
+    private eventService: EventService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit() {
-    this.authService.getCurrentUser().subscribe(
-      (response: any) => {
-        console.log(response);
-        this.user = response;
-        this.fetchUserBookings();
-      },
-      (error: any) => {
-        console.error('Failed to retrieve user:', error);
-      }
-    );
-  }
-  
-  changeTab(tab: string) {
-    this.activeTab = tab;
+    this.authService.getCurrentUser()
+      .pipe(
+        switchMap((response: any) => {
+          this.user = response;
+          return this.fetchUserBookings();
+        }),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(
+        () => {},
+        (error: any) => {
+          console.error('Failed to retrieve user:', error);
+        }
+      );
   }
 
-  getUser() {
-    this.authService.getCurrentUser().subscribe((response: any) => {
-      console.log(response);
-      this.user = response;
-    },
-      (error: any) => {
-      });
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   fetchUserBookings() {
     const userId = this.user._id;
-    this.bookingService.getUserBookings(userId).subscribe(
-      (bookings: any[]) => {
-        const today = new Date();
-        const upcomingBookings: any[] = [];
-        const pastBookings: any[] = [];
+    return this.bookingService.getUserBookings(userId)
+      .pipe(
+        switchMap((bookings: any[]) => {
+          const today = new Date();
+          const upcomingBookings: any[] = [];
+          const pastBookings: any[] = [];
 
-        // Iterate through the bookings array
-        for (const booking of bookings) {
-          const eventId = booking.event;
+          const observables = bookings.map((booking: any) => {
+            const eventId = booking.event;
+            return this.eventService.getEventById(eventId).pipe(
+              switchMap((eventResponse: any) => {
+                if (eventResponse) {
+                  const eventStartDate = new Date(eventResponse.start_date);
+                  booking.event = eventResponse;
+                  return this.retrieveImage(eventId).pipe(
+                    map((imageStyle: SafeStyle) => {
+                      booking.event.image = imageStyle;
+                      if (eventStartDate >= today) {
+                        upcomingBookings.push(booking);
+                      } else {
+                        pastBookings.push(booking);
+                      }
+                      return true;
+                    }),
+                    catchError((error: any) => {
+                      console.error('Failed to retrieve event image:', error);
+                      // Handle image retrieval error here if needed
+                      return of(true);
+                    })
+                  );
+                } else {
+                  console.error('Invalid eventResponse:', eventResponse);
+                  // Handle invalid eventResponse here if needed
+                  return of(true);
+                }
+              })
+            );
+          });
 
-          // Retrieve event details for the current booking
-          this.eventService.getEventById(eventId).subscribe(
-            (eventResponse: any) => {
-              const eventStartDate = new Date(eventResponse.start_date);
-
-              if (eventStartDate >= today) {
-                // Add to upcoming bookings if event start date is in the future
-                upcomingBookings.push({ booking, event: eventResponse });
-              } else {
-                // Add to past bookings if event start date is in the past
-                pastBookings.push({ booking, event: eventResponse });
-              }
-            },
-            (error: any) => {
-              console.error('Failed to retrieve event:', error);
-            }
-          );
-        }
-
-        this.upcomingBookings = upcomingBookings;
-        this.pastBookings = pastBookings;
-      },
-      (error: any) => {
-        console.error('Failed to retrieve user bookings:', error);
-      }
-    );
+          return forkJoin(observables)
+            .pipe(
+              switchMap(() => {
+                this.upcomingBookings = upcomingBookings.sort(
+                  (a, b) => new Date(a.event.start_date).getTime() - new Date(b.event.start_date).getTime()
+                );
+                this.pastBookings = pastBookings.sort(
+                  (a, b) => new Date(b.event.start_date).getTime() - new Date(a.event.start_date).getTime()
+                );
+                return of(true);
+              })
+            );
+        })
+      );
   }
 
-  cancelBooking(bookingId: string) {
-    this.bookingService.cancelBooking(bookingId).subscribe(
-      (response: any) => {
-        this.successMessage = 'Booking cancelled successfully.';
-        // Refresh the bookings after cancellation
-        this.fetchUserBookings();
-      },
-      (error: any) => {
-        // Handle cancellation error
-        this.successMessage = 'Failed to cancel booking.';
-      }
-    );
+  retrieveImage(eventId: string): Observable<SafeStyle> {
+    return this.eventService.getEventImageById(eventId)
+      .pipe(
+        map((imageBlob: Blob) => {
+          const imageUrl = URL.createObjectURL(imageBlob);
+          return this.sanitizer.bypassSecurityTrustStyle(`url(${imageUrl})`);
+        })
+      );
+  }
+
+  onToggleUpcoming() {
+    this.showPastEvents = false;
+  }
+
+  onTogglePast() {
+    this.showPastEvents = true;
   }
 }

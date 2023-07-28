@@ -80,15 +80,19 @@ exports.getCurrentUser = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
-exports.getAllUsers = async (req,res) => {
+
+exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    console.json(users)
     res.json(users);
   } catch (error) {
-    res.status(500).json({ error: error });
+    console.log('Failed to retrieve users:', error);
+    res.status(500).json({ error: 'Failed to retrieve users. Error: ' + error.message });
   }
 };
+
+
+
 exports.getUserByMail = async (req, res) => {
   const { mail } = req.params;
   try {

@@ -45,9 +45,6 @@ exports.sendResetEmail = async (req, res) => {
 };
 exports.sendOrderEmail = async (req, res) => {
     const { to, subject, body } = req.body;
-    const orderId = req.orderId;
-
-    // Create a Nodemailer transporter
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
@@ -57,15 +54,12 @@ exports.sendOrderEmail = async (req, res) => {
         pass: process.env.Password
       }
     });
-  
     // Define the email options
     const mailOptions = {
       from: 'your-email@example.com',
       to,
       subject,
-      html: `
-        <p>YOur Order has been Confirmed with order ID ${orderId}</p>
-      `
+      html: body,
     };
   
     try {

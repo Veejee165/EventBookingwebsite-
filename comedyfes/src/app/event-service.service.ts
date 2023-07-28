@@ -25,6 +25,9 @@ export class EventService {
     );
   }
 
+  getEventsbyCategory(category: string):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/cat/${category}`)
+  }
   // Get event by ID
   getEventById(eventId: string): Observable<any> {
     const url = `${this.baseUrl}/${eventId}`;
@@ -37,10 +40,10 @@ export class EventService {
     const payload = { ticket_quantity: -quantity };
     return this.http.put<any>(url, payload);
   }
-
   getEventImageById(eventId: string): Observable<Blob> {
     const url = `${this.baseUrl}/image/${eventId}`;
     const headers = new HttpHeaders({ 'Content-Type': 'image/jpeg' });
-    return this.http.get(url, { headers, responseType: 'blob' });
+    return this.http.get(url, { headers , responseType: 'blob' });
   }
+
 }

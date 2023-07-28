@@ -6,17 +6,26 @@ import { AuthService } from '../auth-service.service';
 import { Router } from '@angular/router';
 import { CouponServiceService } from '../coupon-service.service';
 import { EmailService } from '../email-service.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-booking-form',
   templateUrl: './booking-form.component.html',
-  styleUrls: ['./booking-form.component.css']
+  styleUrls: ['./booking-form.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({ opacity: 0, transform: 'translateY(-10px)' })),
+      state('*', style({ opacity: 1, transform: 'translateY(0)' })),
+      transition('void <=> *', animate('0.3s ease-in-out')),
+    ]),
+  ],
 })
 export class BookingFormComponent implements OnInit {
   @Input() event: any;
   @Input() user: any;
-  public modalRef!: NgbModalRef;
   @Output() closePopup = new EventEmitter<boolean>();
+  public modalRef!: NgbModalRef;
+  
 
   booking: any = {
     quantity: 0,
@@ -36,6 +45,7 @@ export class BookingFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("Booking Form")
     this.calculateTotalPrice();
   }
 
@@ -58,12 +68,11 @@ export class BookingFormComponent implements OnInit {
     }
 
     // Call the CouponService to check the coupon validity and get the discount amount
-    // Assuming the CouponService method is named `checkCouponValidity()`
     this.couponService.checkCouponValidity(this.booking.couponCode).subscribe(
       (response: any) => {
         if (response.valid) {
           // Apply the discount to the booking
-          this.couponId = response._id;
+          this.couponId = response.id;
           this.event.discount = response.discount;
           this.calculateTotalPrice();
         } else {
@@ -80,9 +89,14 @@ export class BookingFormComponent implements OnInit {
   sendOrderByEmail(bookingId: string) {
     const email = this.user.email
     const subject = 'Order Confirmation';
-    const body = `Your Booking has been confirmed for the event ${this.event.title}`;
-  
-    this.emailService.sendEmail(email, subject, body, bookingId).subscribe(
+    const body = `
+    <p>Your Booking has been confirmed for the event ${this.event.title}</p>
+    <p>Booking ID: ${bookingId}</p>
+    <p>Date: ${this.event.date}</p>
+    <p>Location: ${this.event.location}</p>
+    <p>Total Price: ${this.totalPrice}</p>
+  `;
+    this.emailService.sendOrderEmail(email, subject, body).subscribe(
       (response: any) => {
       },
       (error: any) => {
@@ -91,12 +105,10 @@ export class BookingFormComponent implements OnInit {
   }
 
   submitBookingForm() {
-    const { user, event, quantity } = this.booking;
-    if (!user) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
+    const user= this.user
+    const event = this.event
+    const quantity = this.booking.quantity
+    console.log('User data in submitBookingForm():', event);
     this.bookingService.createBooking(user, event, quantity).subscribe(
       (response) => {
         this.couponService.updateUserCount(this.couponId).subscribe(
@@ -122,5 +134,8 @@ export class BookingFormComponent implements OnInit {
         console.error('Failed to create booking:', error);
       }
     );
+  }
+  closeForm() {
+    this.closePopup.emit();
   }
 }

@@ -1,0 +1,25 @@
+<nav>
+  <ul>
+    <li><a routerLink="/" routerLinkActive="active">Home</a></li>
+    <li class="dropdown">
+      <a href="/events" routerLinkActive="active">Events &#9662;</a>
+      <ul class="dropdown-cont">
+        <li><a routerLink="/events" queryParamsHandling="merge" [queryParams]="{ category: 'Comedy' }">Comedy</a></li>
+        <li><a routerLink="/events" queryParamsHandling="merge" [queryParams]="{ category: 'Drama' }">Drama</a></li>
+        <li><a routerLink="/events" queryParamsHandling="merge" [queryParams]="{ category: 'Movie' }">Movie </a></li>
+        <li><a routerLink="/events" queryParamsHandling="merge" [queryParams]="{ category: 'Concert' }"> Concert</a></li>
+      </ul>
+    </li>
+    <li *ngIf="loggedIn" class="auth-buttons">
+      <span class="lga">LoggedIn as </span>
+      <a routerLink="/profile" routerLinkActive="active">{{ username }}</a>
+    </li>
+    <li class="auth-buttons" *ngIf="!loggedIn">
+      <a routerLink="/login" routerLinkActive="active">Log in</a>
+      <a routerLink="/register" routerLinkActive="active">Register</a>
+    </li>
+  </ul>
+</nav>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

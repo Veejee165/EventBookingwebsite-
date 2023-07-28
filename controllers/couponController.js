@@ -42,31 +42,33 @@ exports.checkCouponValidity = async (req, res) => {
     }
 
     const discount = coupon.discount; // Get the associated discount information
-
-    res.json({ valid: true, discount });
+    const id = coupon._id;
+    res.json({ valid: true, discount, id });
   } catch (error) {
     res.status(500).json({ error: 'Failed to check coupon code validity' });
   }
 };
 
-// Update User Count
 exports.updateUserCount = async (req, res) => {
-    try {
-      const coupon = await Coupon.findByIdAndUpdate(
-        req.params.id,
-        { $inc: { userCount: 1 } }, // Increment userCount by 1
-        { new: true } // Return the updated document
-      );
-  
-      if (!coupon) {
-        return res.status(404).json({ error: 'Coupon code not found' });
-      }
-  
-      res.json({ message: 'User count updated successfully', coupon });
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to update user count' });
+  try {
+    const id = req.body.Cid; // Change to req.body
+    const updates = { $inc: { userCount: 1 } };
+    const coupon = await Coupon.findByIdAndUpdate(
+      id, // Find the coupon by the code
+      updates, // Increment userCount by 1
+      { new: true } // Return the updated document
+    );
+
+    if (!coupon) {
+      return res.status(404).json({ error: 'Coupon code not found' });
     }
-  };
+
+    res.json({ message: 'User count updated successfully', coupon });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update user count' });
+  }
+};
+
 
 
 exports.createCouponCode = async (req, res) => {

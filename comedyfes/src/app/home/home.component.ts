@@ -1,87 +1,87 @@
-import { Component, OnInit,Injectable } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventService } from '../event-service.service';
 import { AuthService } from '../auth-service.service';
-import { DatePipe } from '@angular/common';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Import DomSanitizer
-
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { Observable, catchError, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-@Injectable({
-  providedIn: 'root',
-})
 export class HomeComponent implements OnInit {
-  searchEventName: string = '';
-  searchLocation: string = '';
-  upcomingEvents: any[] = [];
-  filteredEvents: any[] = [];
-  loggedIn: boolean = false;
-  username: string = '';
+  @ViewChildren('slideImage') slideImages!: QueryList<ElementRef>;
+  upcomingEvents: any[];
+  filteredEvents: any[];
+  @ViewChild('slider', { static: true }) sliderRef!: ElementRef<HTMLDivElement>;
+  currentSlideIndex: number = 0;
+  currentEvent: any | null = null;
 
-  constructor(private router: Router, private eventService: EventService, private authservice:AuthService, private sanitizer: DomSanitizer) {}
+
+  constructor(
+    private router: Router,
+    private eventService: EventService,
+    private authService: AuthService,
+    private sanitizer: DomSanitizer
+  ) {
+    this.upcomingEvents = [];
+    this.filteredEvents = [];
+  }
 
   ngOnInit() {
-    this.getUpcomingEvents();
-    this.checkLoginStatus();
-  }
-
-  getUpcomingEvents() {
-    this.eventService.getUpcomingEvents().subscribe(
-      (events: any[]) => {
-        this.upcomingEvents = events;
-        this.filteredEvents = this.upcomingEvents;
-        this.filteredEvents.forEach(event => {
-          this.retrieveImage(event);
-        });
-      },
-      (error: any) => {
-        console.error('Error fetching upcoming events:', error);
+    this.getUpcomingEvents().subscribe(
+      ()=>{
+        this.startSlideInterval();
       }
     );
-
   }
 
-  searchEvents() {
-    this.filteredEvents = this.upcomingEvents.filter(event =>
-      event.title.toLowerCase().includes(this.searchEventName.toLowerCase()) &&
-      (event.city.toLowerCase().includes(this.searchLocation.toLowerCase()) ||
-        event.state.toLowerCase().includes(this.searchLocation.toLowerCase()) ||
-        event.country.toLowerCase().includes(this.searchLocation.toLowerCase()))
+  getUpcomingEvents(): Observable<any[]> {
+    return this.eventService.getUpcomingEvents().pipe(
+      tap((events: any[]) => {
+        this.upcomingEvents = events || [];
+        this.upcomingEvents.forEach((e) => {
+          if (e.image) {
+            this.retrieveImage(e);
+          }
+        });
+      }),
+      catchError((error: any) => {
+        console.error('Error fetching upcoming events:', error);
+        return of([]); // Return an empty array in case of an error
+      })
     );
   }
 
-  goToEventDetails(eventId: string) {
-    this.router.navigate(['/event-details', eventId]);
-  }
-
-  checkLoginStatus() {
-    this.authservice.getCurrentUser().subscribe((response: any) => {
-      console.log(response)
-      this.username = response.username
-      this.loggedIn = true
-    },
-    (error: any) => {
-    })
-  }
-
-  goToUserProfile() {
-    // Assuming the user profile route is '/user-profile', navigate to it
-    this.router.navigate(['/profile']);
- 
-  }
   retrieveImage(event: any) {
     this.eventService.getEventImageById(event._id).subscribe(
       (imageBlob: Blob) => {
         const imageUrl = URL.createObjectURL(imageBlob);
-        event.image = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+        event.image = this.sanitizer.bypassSecurityTrustStyle(`url(${imageUrl})`);
+        this.filteredEvents.push(event)
       },
       (error: any) => {
         console.error('Failed to retrieve event image:', error);
       }
     );
   }
+
+  goToEventDetails(eventId: string) {
+    this.router.navigate(['/events', eventId]);
+  }
+  startSlideInterval() {
+    setInterval(() => {
+      this.showNextSlide();
+    }, 5000);
+  }
+  showNextSlide() {
+    this.currentSlideIndex++;
+    if (this.currentSlideIndex >= this.filteredEvents.length) {
+      this.currentSlideIndex = 0;
+    }
+    this.currentEvent = this.filteredEvents[this.currentSlideIndex];
+  }
+  
+  
 }

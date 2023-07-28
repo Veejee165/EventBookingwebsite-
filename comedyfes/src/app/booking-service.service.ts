@@ -40,6 +40,7 @@ export class BookingService {
       );
     });
   }
+  
   // Delete a booking
   deleteBooking(bookingId: string): Observable<any> {
     const url = `${this.baseUrl}/${bookingId}`;

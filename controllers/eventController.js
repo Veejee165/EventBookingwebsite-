@@ -32,7 +32,7 @@ exports.getEventById = async (req, res) => {
 
 // Create a new event (accessible to admins only)
 exports.createEvent = async (req, res) => {
-  const { title, description, venue, city, state, country, start_date, end_date, start_time, end_time, ticket_price, ticket_quantity } = req.body;
+  const { title, description,category, venue, city, state, country, start_date, end_date, start_time, end_time, ticket_price, ticket_quantity } = req.body;
   const image = req.file; // The uploaded image file
 
   // Check if the user is an admin
@@ -44,6 +44,7 @@ exports.createEvent = async (req, res) => {
     const newEvent = new Event({
       title,
       description,
+      category,
       venue,
       city,
       state,
@@ -92,14 +93,24 @@ exports.updateEvent = async (req, res) => {
   }
 };
 
+exports.getEventsbyCategory = async (req,res)=>{
+  const { category } = req.params;
+  try {
+    const event = await Event.find({category:category});
+    res.json(events)
+  } catch (error) {
+    res.status(400).json({ error: 'Failed to get events' });
+  }
+}
+
 // Delete an event (accessible to admins only)
 exports.deleteEvent = async (req, res) => {
   const { id } = req.params;
 
   // Check if the user is an admin
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ error: 'Access denied' });
-  }
+  // if (req.user.role !== 'admin') {
+  //   return res.status(403).json({ error: 'Access denied' });
+  // }
 
   try {
     const event = await Event.findByIdAndDelete(id);

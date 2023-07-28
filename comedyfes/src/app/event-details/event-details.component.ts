@@ -18,7 +18,7 @@ export class EventDetailsComponent implements OnInit {
   event: any;
   user: any;
   modalRef!: NgbModalRef; // Add the ! modifier to mark it as definitely assigned
-
+  showBookingForm: boolean = false; // 
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
@@ -42,18 +42,22 @@ export class EventDetailsComponent implements OnInit {
   }
 
   openBookingDialog() {
-    // Open the modal and set the component properties
-    const modalRef = this.modalService.open(BookingFormComponent, { centered: true });
-    modalRef.componentInstance.event = this.event; // Pass the event data to the modal
-    modalRef.componentInstance.user = this.user; // Pass the user data to the modal
-
-    // Subscribe to the closePopup event emitted by the BookingFormComponent
-    modalRef.componentInstance.closePopup.subscribe((closed: boolean) => {
-      if (closed) {
-        modalRef.close(); // Close the modal when closePopup is emitted
-      }
-    });
+    this.showBookingForm = true;
   }
+  // openBookingDialog() {
+  //   console.log("open")
+  //   // Open the modal and set the component properties
+  //   const modalRef = this.modalService.open(BookingFormComponent, { centered: true });
+  //   modalRef.componentInstance.event = this.event; // Pass the event data to the modal
+  //   modalRef.componentInstance.user = this.user; // Pass the user data to the modal
+  //   // Subscribe to the closePopup event emitted by the BookingFormComponent
+  //   modalRef.componentInstance.closePopup.subscribe((closed: boolean) => {
+  //     if (closed) {
+  //       console.log("closed")
+  //       modalRef.close(); // Close the modal when closePopup is emitted
+  //     }
+  //   });
+  // }
   retrieveImage(event: any) {
     this.eventService.getEventImageById(event._id).subscribe(
       (imageBlob: Blob) => {

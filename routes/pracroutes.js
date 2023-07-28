@@ -19,7 +19,7 @@ router.route('/events')
 .get(eventController.getAllEvents)
 .post(upload.single('image'), eventController.createEvent);
 
-// .get(eventController.getAllEvents)
+router.route('/events/cat/:category').get(eventController.getEventsbyCategory)
 
 router.route('/events/:id')
   .get(eventController.getEventById)

@@ -1,0 +1,101 @@
+
+nav {
+  background-color: #151414;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+ul {
+  list-style-type: none;
+  padding: 5px;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px; /* Set the navbar height */
+  position: relative;
+}
+
+li {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: #ffffffbe;
+  padding: 0 10px; 
+  line-height: 60px; /* Set the line-height to match the navbar height */
+  position: relative;
+  text-transform: capitalize;
+  transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: calc(100% + 10px);
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+a:hover::before {
+  opacity: 1;
+  border-radius: 5px; /* Add rounded corners on hover */
+}
+
+/* Improve button appearance on hover */
+a:hover {
+  
+  color: #fff; /* Change text color on hover */
+  transform: translateY(-4px); /* Move the text up on hover */
+}
+
+.lga {
+  color: #ffffffbe;
+}
+
+.auth-buttons {
+  margin-left: auto;
+}
+
+.content {
+
+  background-color: #000;
+  padding-top: 60px;
+}
+
+/* Dropdown styles */
+.dropdown-cont {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 10px 10px;
+  left: 0;
+  z-index: 9999999;
+  min-height: 110px;
+}
+.dropdown {
+  position: relative;
+}
+
+li:hover > .dropdown-cont {
+  display: block;
+  pointer-events: auto;
+}
+
+
