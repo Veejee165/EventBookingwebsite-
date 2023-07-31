@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit {
   @ViewChildren('slideImage') slideImages!: QueryList<ElementRef>;
   upcomingEvents: any[];
   filteredEvents: any[];
+  eventsToday: any[];
+  eventsLowAvailability: any[];
   @ViewChild('slider', { static: true }) sliderRef!: ElementRef<HTMLDivElement>;
   currentSlideIndex: number = 0;
   currentEvent: any | null = null;
@@ -27,6 +29,8 @@ export class HomeComponent implements OnInit {
   ) {
     this.upcomingEvents = [];
     this.filteredEvents = [];
+    this.eventsToday = [];
+    this.eventsLowAvailability = [];
   }
 
   ngOnInit() {
@@ -44,6 +48,7 @@ export class HomeComponent implements OnInit {
         this.upcomingEvents.forEach((e) => {
           if (e.image) {
             this.retrieveImage(e);
+            this.filterEvent(e);
           }
         });
       }),
@@ -59,7 +64,8 @@ export class HomeComponent implements OnInit {
       (imageBlob: Blob) => {
         const imageUrl = URL.createObjectURL(imageBlob);
         event.image = this.sanitizer.bypassSecurityTrustStyle(`url(${imageUrl})`);
-        this.filteredEvents.push(event)
+        event.imageURL = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+        return event;
       },
       (error: any) => {
         console.error('Failed to retrieve event image:', error);
@@ -82,6 +88,26 @@ export class HomeComponent implements OnInit {
     }
     this.currentEvent = this.filteredEvents[this.currentSlideIndex];
   }
+  filterEvent(e:any) {
+    const currentDate = new Date();
+    this.filteredEvents.push(e)
+    const eventStartDate = new Date(e.start_date);
   
-  
+  if (
+    eventStartDate.getFullYear() === currentDate.getFullYear() &&
+    eventStartDate.getMonth() === currentDate.getMonth() &&
+    eventStartDate.getDate() === currentDate.getDate()
+  ) {
+    this.eventsToday.push(e);
+  }
+    if(e.ticketsRemaining / e.totalTickets < 0.2){
+      this.eventsLowAvailability.push(e)
+    }
+  }
+
+  // filterEventsLowAvailability() {
+  //   this.eventsLowAvailability = this.filteredEvents.filter(event => {
+  //     return event.ticketsRemaining / event.totalTickets < 0.2;
+  //   });
+  // }
 }

@@ -10,6 +10,7 @@
         <li><a routerLink="/events" queryParamsHandling="merge" [queryParams]="{ category: 'Concert' }"> Concert</a></li>
       </ul>
     </li>
+    <li><a routerLink="#" routerLinkActive="active">Contact Us</a></li>
     <li *ngIf="loggedIn" class="auth-buttons">
       <span class="lga">LoggedIn as </span>
       <a routerLink="/profile" routerLinkActive="active">{{ username }}</a>

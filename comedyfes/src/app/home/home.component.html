@@ -6,4 +6,30 @@
     </div>
   </div>
 </div>
-<div class="zz"></div>
+<!-- Events Happening Today -->
+<div class="events-section">
+  <h2>Events Happening Today</h2>
+  <div class="events-row">
+    <!-- Iterate over eventsToday array and display small cards here -->
+    <div class="event-card" *ngFor="let event of eventsToday" (click)="goToEventDetails(event._id)">
+      <!-- Display event details (e.g., title, image, etc.) -->
+      <div class="event-image" [style.background-image]="event.image"></div>
+      <div class="event-title">{{ event.title }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- Events with Low Ticket Availability -->
+<div class="events-section">
+  <h2>Events with Low Ticket Availability</h2>
+  <div class="events-row">
+    <!-- Iterate over eventsLowAvailability array and display small cards here -->
+    <div class="event-card" *ngFor="let event of eventsLowAvailability" (click)="goToEventDetails(event._id)">
+      <!-- Display event details (e.g., title, image, etc.) -->
+      <div class="event-image" [style.background-image]="event.image"></div>
+      <div class="event-title">{{ event.title }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- Add CSS styles for horizontal scrolling and event cards as needed -->

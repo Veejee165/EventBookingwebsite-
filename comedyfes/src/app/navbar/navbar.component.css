@@ -28,7 +28,7 @@ li {
 a {
   display: inline-block;
   text-decoration: none;
-  color: #ffffffbe;
+  color: rgb(184, 208, 228);
   padding: 0 10px; 
   line-height: 60px; /* Set the line-height to match the navbar height */
   position: relative;
@@ -64,7 +64,7 @@ a:hover {
 }
 
 .lga {
-  color: #ffffffbe;
+  color: rgb(184, 208, 228)
 }
 
 .auth-buttons {
