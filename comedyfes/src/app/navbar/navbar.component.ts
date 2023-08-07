@@ -4,15 +4,15 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent implements OnInit {
   loggedIn: boolean = false;
   username: string = '';
   ngOnInit() {
     this.checkLoginStatus();
   }
-  constructor(  private router: Router,private authService:AuthService){}
+  constructor(private router: Router, private authService: AuthService) {}
 
   checkLoginStatus() {
     this.authService.getCurrentUser().subscribe(
@@ -23,8 +23,7 @@ export class NavbarComponent implements OnInit{
       (error: any) => {}
     );
   }
-
   goToUserProfile() {
     this.router.navigate(['/profile']);
-  } 
+  }
 }

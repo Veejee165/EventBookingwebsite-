@@ -1,186 +1,210 @@
-/* booking-form.component.css */
-.booking-form-container {
-  position: relative;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: transparent;
-  border: none;
-  font-size: 20px;
-  color: #333;
-  cursor: pointer;
-}
-.slide__darkbg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.booking-dialog {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  padding-right: 10px;
-  backdrop-filter: blur(20px);
-  animation: fadeIn 0.5s;
-  display: block !important;
-  flex-direction: column;
-  align-items: center;
+.container {
+  border-radius: 9px;
+  max-height: 70vh;
   max-width: 900px;
-  margin:  auto;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-}
-
-.booking-dialog.ng-leave {
-  animation: fadeOut 0.3s;
-}
-
-.booking-form-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  overflow: hidden;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
-  display: none;
-  backdrop-filter: blur(10px);
+  background-color: #f8f9fa;
+  display: flex; /* Add display: flex to make box-2 have the same height as box-1 */
 }
 
-.booking-dialog.ng-enter,
-.booking-dialog.ng-leave {
-  animation-duration: 0.3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: both;
-  display: block;
+.total-price {
+  font-size: 18px;
 }
 
-.booking-dialog.ng-enter {
-  animation-name: slideInFromBottom;
+.box-1 {
+  flex: 1;
+  max-width: 450px;
+  padding: 20px 40px;
+  user-select: none;
+  position: relative;
+  overflow-y: auto;
 }
 
-.booking-dialog.ng-leave {
-  animation-name: slideOutToBottom;
-}
-
-.booking-dialog h2 {
-  font-size: 24px;
+.box-1 h2 {
+  font-size: 20px;
+  font-weight: bold;
   margin-bottom: 20px;
 }
 
-.booking-dialog .form-group {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+.box-1 .form-group {
+  margin-bottom: 20px;
 }
 
-.booking-dialog .form-group label {
-  flex: 0 0 120px;
+.box-1 label {
+  font-size: 14px;
   font-weight: bold;
+  display: block;
 }
 
-.booking-dialog .form-group input[type="number"],
-.booking-dialog .form-group input[type="text"] {
-  flex: 1;
-  margin-right: 10px;
-  max-width: 200px;
+.box-1 .StripeElement,
+.box-1 .form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-width: 100%;
 }
 
-.booking-dialog .total-price {
-  font-size: 18px;
+.box-1 .btn {
+  padding: 8px 15px;
+  font-size: 14px;
   font-weight: bold;
-  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.booking-dialog .btn-book-now {
-  margin-top: 20px;
+.box-1 .btn-primary {
+  background-color: #7700ff;
+  color: #fff;
+}
+
+.box-1 .btn-primary:hover {
+  background-color: #7a34ca;
 }
 
 .booking-confirmation {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 128, 0, 0.8);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
   font-size: 18px;
-  animation: confirmationAnimation 3s ease-in-out forwards;
-  display: none;
-  z-index: 9999;
+  font-weight: bold;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  color: #7a34ca;
 }
 
-.booking-confirmation.show {
+.box-1 .form-group.stripe-form-group {
+  display: flex;
+  align-items: center;
+}
+
+.box-1 .form-group.stripe-form-group .btn {
+  margin-left: 10px;
+}
+
+.box-1 .btn-book-now {
+  margin-top: 10px;
+  padding: 9px 20px; /* Adjust padding to make the button larger */
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #7a34ca;
+  color: #fff;
+  transition: background-color 0.3s ease; /* Add a smooth transition on hover */
+}
+
+.box-1 .btn-book-now:hover {
+  background-color: #5f24b5; /* Change the background color on hover */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow on hover */
+  color: #fff; /* Change the text color on hover */
+}
+
+.box-2 {
+  flex: 1;
+  max-width: 450px;
+  height: 100%;
+  padding: 20px 40px;
+  background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+}
+.box-2 p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-bottom: 4px; /* Add some padding below the title */
+  border-bottom: 1px solid #000; /* Add a border below the title */
+}
+
+.box-2 img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+/* .box-inner-2:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  left: 0;
+  margin-top: 20px;
+  bottom: 0;
+  
+} */
+
+.box-1 .card-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.box-1 .card-details .form-group {
+  flex: 1;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  max-width: 33.33%;
+}
+
+.box-1 .card-details .form-group:last-child {
+  margin-right: 0;
+}
+
+.box-1 .card-details .form-group label {
   display: block;
 }
 
-.checkmark {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: block;
-  stroke-width: 2;
-  stroke: #fff;
-  stroke-miterlimit: 10;
-  margin: 10% auto;
-  box-shadow: inset 0px 0px 0px #7ac142;
-  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+.box-1 .card-details .form-group .StripeElement {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-width: 100%;
 }
 
-.checkmark__circle {
-  stroke-dasharray: 166;
-  stroke-dashoffset: 166;
-  stroke-width: 2;
-  stroke-miterlimit: 10;
-  stroke: #7ac142;
-  fill: none;
-  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-}
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+  .container {
+    max-width: 700px;
+    margin: 10px auto;
+  }
 
-.checkmark__check {
-  transform-origin: 50% 50%;
-  stroke-dasharray: 48;
-  stroke-dashoffset: 48;
-  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
-}
+  .box-1,
+  .box-2 {
+    max-width: 600px;
+    padding: 20px 20px; /* Adjust padding */
+    margin: 20px auto;
+  }
 
-@keyframes stroke {
-  100% {
-    stroke-dashoffset: 0;
+  .box-1 .card-details .form-group {
+    flex: 1 0 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 }
 
-@keyframes scale {
-  0%, 100% {
-    transform: none;
+@media (max-width: 426px) {
+  .box-1,
+  .box-2 {
+    max-width: 400px;
+    padding: 20px 10px;
   }
-  50% {
-    transform: scale3d(1.1, 1.1, 1);
+
+  ::placeholder {
+    font-size: 9px;
   }
 }
 
-@keyframes fill {
-  100% {
-    box-shadow: inset 0px 0px 0px 30px #7ac142;
+@media (min-width: 992px) {
+  .box-1 {
+    width: 50%;
+    float: left;
   }
-}
 
-@keyframes confirmationAnimation {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
+  .box-2 {
+    width: 50%;
+    float: right;
   }
 }

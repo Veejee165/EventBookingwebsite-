@@ -1,3 +1,4 @@
+<div class="content">
 <div class="slider" (click)="goToEventDetails(currentEvent?._id)">
   <div class="slide__image" [style.background-image]="currentEvent?.image" >
     <div class="slide__darkbg"></div>
@@ -7,29 +8,33 @@
   </div>
 </div>
 <!-- Events Happening Today -->
-<div class="events-section">
+<!-- <div class="events-section">
   <h2>Events Happening Today</h2>
   <div class="events-row">
-    <!-- Iterate over eventsToday array and display small cards here -->
     <div class="event-card" *ngFor="let event of eventsToday" (click)="goToEventDetails(event._id)">
-      <!-- Display event details (e.g., title, image, etc.) -->
       <div class="event-image" [style.background-image]="event.image"></div>
       <div class="event-title">{{ event.title }}</div>
     </div>
   </div>
-</div>
+</div> -->
 
+<div class="events-section1">
+  <h2>Happening Today</h2>
+  <div id="app" class="container">
+    <app-card *ngFor="let event of eventsToday" [dataImage]="event.image" (click)="goToEventDetails(event._id)">
+      <h1 slot="header">{{ event.title }}</h1>
+      <p slot="content">{{event.description}}</p>
+    </app-card>
+  </div>
+</div>
 <!-- Events with Low Ticket Availability -->
-<div class="events-section">
-  <h2>Events with Low Ticket Availability</h2>
-  <div class="events-row">
-    <!-- Iterate over eventsLowAvailability array and display small cards here -->
-    <div class="event-card" *ngFor="let event of eventsLowAvailability" (click)="goToEventDetails(event._id)">
-      <!-- Display event details (e.g., title, image, etc.) -->
-      <div class="event-image" [style.background-image]="event.image"></div>
-      <div class="event-title">{{ event.title }}</div>
-    </div>
+<div class="events-section2">
+  <h2>Selling Out</h2>
+  <div id="app" class="container">
+    <app-card *ngFor="let event of eventsLowAvailability" [dataImage]="event.image" (click)="goToEventDetails(event._id)">
+      <h1 slot="header">{{ event.title }}</h1>
+      <p slot="content">{{event.description}}</p>
+    </app-card>
   </div>
 </div>
-
-<!-- Add CSS styles for horizontal scrolling and event cards as needed -->
+</div>

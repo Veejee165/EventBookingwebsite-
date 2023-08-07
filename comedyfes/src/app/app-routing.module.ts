@@ -8,38 +8,34 @@ import { BookingFormComponent } from './booking-form/booking-form.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { PasswordResetComponent } from './password-reset/password-reset.component'
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { DefaultComponent } from './default/default.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: NavbarComponent, 
+    component: NavbarComponent,
     children: [
       { path: '', component: HomeComponent },
       { path: 'events', component: EventListComponent },
-      { path: 'events/:id', component: EventDetailsComponent }
-      
+      { path: 'events/:id', component: EventDetailsComponent },
     ],
   },
+  { path: 'booking-form', component: BookingFormComponent },
+
+  { path: 'profile', component: UserProfileComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'recovery-mail', component: PasswordRecoveryComponent },
   {
-    path: '', 
-    component: DefaultComponent,
-    children: [
-      { path: 'booking-form', component: BookingFormComponent },
-      { path: 'profile', component: UserProfileComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'recovery-mail', component: PasswordRecoveryComponent },
-      { path: 'reset-password/token=:token', component: PasswordResetComponent },
-    ],
+    path: 'reset-password/token=:token',
+    component: PasswordResetComponent,
   },
   // Add additional routes as needed
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

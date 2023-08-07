@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { EventService } from './event-service.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BookingService {
   private baseUrl = 'http://localhost:5001/prac/bookings';
@@ -17,46 +17,74 @@ export class BookingService {
   }
 
   // Create a booking
-  createBooking(user: any, event: any, quantity: number): Observable<any> {
-    const booking = { user: user._id, event: event._id, quantity }; // Create the booking object with required properties
-  
+  createBooking(
+    user: any,
+    event: any,
+    quantity: number,
+    paid: number,
+    paymentIntentId: String
+  ): Observable<any> {
+    const booking = {
+      user: user._id,
+      event: event._id,
+      quantity,
+      paid,
+      paymentIntentId,
+    }; // Create the booking object with required properties
     return new Observable((observer) => {
-      this.http.post<any>(this.baseUrl, booking).subscribe(
-        (response) => {
-          // Lower the quantity of the event by the quantity of the booking
-          this.eventService.updateEventQuantity(event._id, quantity).subscribe(
-            () => {
-              observer.next(response);
-              observer.complete();
-            },
-            (error) => {
-              observer.error(error);
-            }
-          );
-        },
-        (error) => {
-          observer.error(error);
-        }
-      );
+      if (quantity <= event.ticket_quantity) {
+        this.http.post<any>(this.baseUrl, booking).subscribe(
+          (response) => {
+            // Lower the quantity of the event by the quantity of the booking
+            this.eventService
+              .updateEventQuantity(event._id, quantity)
+              .subscribe(
+                () => {
+                  observer.next(response);
+                  observer.complete();
+                },
+                (error) => {
+                  observer.error(error);
+                }
+              );
+          },
+          (error) => {
+            observer.error(error);
+          }
+        );
+      } else {
+        observer.error('Not enough seats left');
+      }
     });
   }
-  
+
   // Delete a booking
-  deleteBooking(bookingId: string): Observable<any> {
+  deleteBooking(booking: any): Observable<any> {
+    const bookingId = booking._id;
     const url = `${this.baseUrl}/${bookingId}`;
     return this.http.delete<any>(url);
   }
+
   getUserBookings(userId: string): Observable<any> {
     const url = `${this.baseUrl}/user/${userId}`;
     return this.http.get(url);
   }
 
-  cancelBooking(bookingId: string): Observable<any> {
-    const url = `${this.baseUrl}/${bookingId}`;
-    return this.http.delete(url);
+  // Update the createPaymentIntent method to create a charge instead
+  createPaymentIntent(paymentData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/create-payment`, paymentData);
   }
-  
- 
+  initiateRefund(paymentIntentId: string): Observable<any> {
+    const url = `${this.baseUrl}/refund/${paymentIntentId}`;
+    return this.http.post(url, {});
+  }
+
+  updateBookingWithPaymentIntentId(
+    booking: any,
+    paymentIntentId: string
+  ): Observable<any> {
+    const url = `${this.baseUrl}/intent/${booking._id}`;
+    const updates = { paymentIntentId };
+    return this.http.patch(url, updates);
+  }
 }
-
-

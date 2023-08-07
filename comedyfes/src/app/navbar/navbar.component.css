@@ -1,11 +1,11 @@
-
 nav {
-  background-color: #151414;
+  background-color: #1c252c;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 100;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid #000;
 }
 
 ul {
@@ -28,16 +28,23 @@ li {
 a {
   display: inline-block;
   text-decoration: none;
-  color: rgb(184, 208, 228);
-  padding: 0 10px; 
+  background: -webkit-linear-gradient(
+    120deg,
+    aliceblue,
+    aquamarine 40%,
+    aliceblue 80%,
+    aquamarine
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0 10px;
   line-height: 60px; /* Set the line-height to match the navbar height */
   position: relative;
-  text-transform: capitalize;
   transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
 a::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 50%;
@@ -58,13 +65,20 @@ a:hover::before {
 
 /* Improve button appearance on hover */
 a:hover {
-  
-  color: #fff; /* Change text color on hover */
   transform: translateY(-4px); /* Move the text up on hover */
 }
 
 .lga {
-  color: rgb(184, 208, 228)
+  /* background: -webkit-linear-gradient(
+    120deg,
+    aliceblue,
+    aquamarine 40%,
+    aliceblue 80%,
+    aquamarine
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  color: aliceblue;
 }
 
 .auth-buttons {
@@ -72,8 +86,6 @@ a:hover {
 }
 
 .content {
-
-  background-color: #000;
   padding-top: 60px;
 }
 
@@ -81,14 +93,26 @@ a:hover {
 .dropdown-cont {
   display: none;
   position: absolute;
-  background-color: #333;
-  min-width: 160px;
+  background-color: #1c252c;
+  min-width: 150px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  padding: 10px 10px;
+  padding-left: 15px;
+  padding-top: 2px;
   left: 0;
   z-index: 9999999;
-  min-height: 110px;
+  min-height: 140px;
 }
+
+/* Set the background color for li elements in the dropdown */
+.dropdown-cont a {
+  padding: 5px;
+}
+
+/* Set the text color to the reverse of the gradient on hover */
+.dropdown-cont a:hover {
+  color: aliceblue;
+}
+
 .dropdown {
   position: relative;
 }
@@ -97,5 +121,3 @@ li:hover > .dropdown-cont {
   display: block;
   pointer-events: auto;
 }
-
-

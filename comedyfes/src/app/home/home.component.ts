@@ -1,14 +1,20 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { EventService } from '../event-service.service';
-import { AuthService } from '../auth-service.service';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { Observable, catchError, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   @ViewChildren('slideImage') slideImages!: QueryList<ElementRef>;
@@ -20,11 +26,9 @@ export class HomeComponent implements OnInit {
   currentSlideIndex: number = 0;
   currentEvent: any | null = null;
 
-
   constructor(
     private router: Router,
     private eventService: EventService,
-    private authService: AuthService,
     private sanitizer: DomSanitizer
   ) {
     this.upcomingEvents = [];
@@ -34,11 +38,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUpcomingEvents().subscribe(
-      ()=>{
-        this.startSlideInterval();
-      }
-    );
+    console.log('Home');
+    this.getUpcomingEvents().subscribe(() => {
+      this.startSlideInterval();
+    });
   }
 
   getUpcomingEvents(): Observable<any[]> {
@@ -63,7 +66,9 @@ export class HomeComponent implements OnInit {
     this.eventService.getEventImageById(event._id).subscribe(
       (imageBlob: Blob) => {
         const imageUrl = URL.createObjectURL(imageBlob);
-        event.image = this.sanitizer.bypassSecurityTrustStyle(`url(${imageUrl})`);
+        event.image = this.sanitizer.bypassSecurityTrustStyle(
+          `url(${imageUrl})`
+        );
         event.imageURL = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
         return event;
       },
@@ -88,26 +93,20 @@ export class HomeComponent implements OnInit {
     }
     this.currentEvent = this.filteredEvents[this.currentSlideIndex];
   }
-  filterEvent(e:any) {
+  filterEvent(e: any) {
     const currentDate = new Date();
-    this.filteredEvents.push(e)
+    this.filteredEvents.push(e);
     const eventStartDate = new Date(e.start_date);
-  
-  if (
-    eventStartDate.getFullYear() === currentDate.getFullYear() &&
-    eventStartDate.getMonth() === currentDate.getMonth() &&
-    eventStartDate.getDate() === currentDate.getDate()
-  ) {
-    this.eventsToday.push(e);
-  }
-    if(e.ticketsRemaining / e.totalTickets < 0.2){
-      this.eventsLowAvailability.push(e)
+
+    if (
+      eventStartDate.getFullYear() === currentDate.getFullYear() &&
+      eventStartDate.getMonth() === currentDate.getMonth() &&
+      eventStartDate.getDate() === currentDate.getDate()
+    ) {
+      this.eventsToday.push(e);
+    }
+    if (e.ticket_quantity < 40) {
+      this.eventsLowAvailability.push(e);
     }
   }
-
-  // filterEventsLowAvailability() {
-  //   this.eventsLowAvailability = this.filteredEvents.filter(event => {
-  //     return event.ticketsRemaining / event.totalTickets < 0.2;
-  //   });
-  // }
 }

@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { PasswordRecoveryComponent } from './password-recovery/password-recovery.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,9 +19,10 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar/navbar.component';
-import { DefaultComponent } from './default/default.component';
-import { SlickCarouselModule } from 'ngx-slick-carousel'; // Import the ngx-slick-carousel module
-
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { CardComponent } from './card/card.component';
+import { SharedserviceService } from './sharedservice.service';
+import { NgxStripeModule } from 'ngx-stripe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,9 +36,10 @@ import { SlickCarouselModule } from 'ngx-slick-carousel'; // Import the ngx-slic
     PasswordRecoveryComponent,
     PasswordResetComponent,
     NavbarComponent,
-    DefaultComponent
+    CardComponent,
   ],
   imports: [
+    MatIconModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -44,9 +47,12 @@ import { SlickCarouselModule } from 'ngx-slick-carousel'; // Import the ngx-slic
     NgbModule,
     MatDialogModule,
     BrowserAnimationsModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    NgxStripeModule.forRoot(
+      'pk_test_51NauYiSBEU9mLt63mFKiwMQOIDxHaNZlGW4OnDQweEmOk4Hbry81dmN29feTHUOvv4PSc4YCFUJUYq09YjHoIgZL00h8Mj1bzl'
+    ),
   ],
-  providers: [DatePipe],
-  bootstrap: [AppComponent]
+  providers: [DatePipe, SharedserviceService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

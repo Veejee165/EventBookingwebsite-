@@ -139,3 +139,19 @@ exports.getEventImageById = async (req, res, next) => {
     res.status(500).json({ error: 'Failed to retrieve image' });
   }
 };
+exports.getEventsByDate = async (date) => {
+  try {
+    // Get the start and end of tomorrow
+    startOfTomorrow=date
+    startOfTomorrow.setHours(0, 0, 0, 0); // Set time to 00:00:00:000
+
+    const endOfTomorrow = new Date(startOfTomorrow);
+    endOfTomorrow.setDate(endOfTomorrow.getDate() + 2); // Tomorrow + 1 day
+    endOfTomorrow.setMilliseconds(endOfTomorrow.getMilliseconds() - 1); // Set time to 23:59:59:999
+
+    const events = await Event.find({ start_date: { $gte: startOfTomorrow, $lt: endOfTomorrow } });
+    return events;
+  } catch (error) {
+    throw new Error('Failed to retrieve events by date');
+  }
+};

@@ -1,70 +1,150 @@
-/* Darker theme for event-details container */
+/* CSS for the entire page, including the improved "event-description" section */
+.clear {
+  clear: both;
+}
+
 .event-details {
-  font-family: Sofia, sans-serif;
-  width: 100%;
-  max-width: 700px;
-  margin: auto;
-  align-self: center;
-  padding: 20px;
-  background-color: #333; /* Darker background color */
-  color: #fff; /* White text color */
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Darker box shadow */
+  position: relative;
 }
 
-/* Darker theme for h2 */
-.event-details h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-/* Darker theme for event-image */
 .event-image {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
 }
 
-.event-image img {
+.event-image .image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  filter: blur(2px);
+}
+
+.event-image:hover .image {
+  transform: scale(1.2);
+  -ms-transform: scale(1.2); /* IE 9 */
+  -webkit-transform: scale(1.2); /* Safari and Chrome */
+}
+
+.slide__darkbg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.event-info-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 35%;
+  height: 60vh;
+  padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Darker image shadow */
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
 }
 
-/* Darker theme for description */
-.event-details .description {
-  font-size: 18px;
-  margin-bottom: 20px;
+.button {
+  z-index: 999999999999999999;
+  padding-top: 20px;
+  transition: background-color 0.3s ease-in-out;
 }
 
-/* Darker theme for event-info */
-.event-info {
+button:hover {
+  background-color: #2980b9; /* Darker shade on hover */
+}
+
+.event-title {
+  padding-top: 8vh;
+  padding-bottom: 2vh;
+  font-size: 28px;
+}
+
+.event-date-time,
+.event-venue {
   font-size: 16px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+.event-description {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9; /* Lighter background color */
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333; /* Darker text color for better readability */
+  /* Additional styles to improve appearance */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
 }
 
-.event-info p {
-  margin: 5px 0;
+/* New styles to add sleek lines above and below key-value pairs */
+.event-description .event-info {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Adjust the columns based on your preference */
+  gap: 10px; /* Adjust the gap between key-value pairs */
+  margin-top: 15px; /* Add some spacing above the key-value pairs */
+  padding-top: 15px; /* Add padding above the key-value pairs */
+  border-top: 1px solid #ccc; /* Add a line above the key-value pairs */
 }
 
-/* Darker theme for button */
-.event-details button {
-  display: block;
-  margin: 20px auto;
-  background-color: #555; /* Darker button background color */
+.event-description .event-info p {
+  margin: 0;
+  padding: 5px 0; /* Add some padding around the key-value pairs */
 }
 
-/* Darker theme for login-message */
+.event-description .event-info .key {
+  font-weight: bold;
+  color: #2980b9; /* Key color */
+  text-transform: capitalize; /* Capitalize the keys */
+}
+
+/* Improved styles for the icons */
+.event-description .event-info .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #2980b9; /* Icon background color */
+  border-radius: 50%;
+  color: #fff; /* Icon color */
+  font-size: 14px;
+}
+
 .login-message {
   font-size: 16px;
   text-align: center;
+  margin-top: 20px;
 }
 
-/* Additional styles to improve accessibility */
-.event-details:focus-within {
-  box-shadow: 0 0 0 2px #aaa;
-  outline: none;
+.events-section1 {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  color: #333;
+  overflow-x: auto;
+}
+.events-section1 .container {
+  display: flex;
+  flex-wrap: nowrap; /* Ensures cards stay in a single row */
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0 20px;
 }
 
-.event-details:hover {
-  cursor: default;
+.events-section1 h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
 }

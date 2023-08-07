@@ -71,4 +71,37 @@ exports.sendOrderEmail = async (req, res) => {
       res.status(500).json({ error: 'Failed to send email' });
     }
   };
+  // emailController.js
+
+exports.sendEmailDirect = async (emailOptions) => {
+  const { to, subject, body } = emailOptions;
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: 'f20210190@dubai.bits-pilani.ac.in',
+      pass: process.env.Password
+    }
+  });
+
+  // Define the email options
+  const mailOptions = {
+    from: 'your-email@example.com',
+    to,
+    subject,
+    html: body,
+  };
+
+  try {
+    // Send the email
+    console.log('Sending email with options:', mailOptions);
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw new Error('Failed to send email');
+  }
+};
+
   

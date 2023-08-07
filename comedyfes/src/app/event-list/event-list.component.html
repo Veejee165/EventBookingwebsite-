@@ -1,12 +1,21 @@
-
 <div class="content">
   <h2>Upcoming Events</h2>
   <div class="search-bar">
-    <input type="text" [(ngModel)]="searchEventName" placeholder="Search by Event Name">
-    <input type="text" [(ngModel)]="searchLocation" placeholder="Search by Location">
+    <input
+      type="text"
+      [(ngModel)]="searchEventName"
+      placeholder="Search by Event Name"
+    />
+    <input
+      type="text"
+      [(ngModel)]="searchLocation"
+      placeholder="Search by Location"
+    />
     <select [(ngModel)]="searchEventCategory" class="form-control">
       <option value="">All Categories</option>
-      <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      <option *ngFor="let category of categories" [value]="category">
+        {{ category }}
+      </option>
     </select>
     <button (click)="searchEvents()">Search</button>
   </div>
@@ -14,7 +23,7 @@
     <div class="event-item" *ngFor="let event of filteredEvents">
       <div class="event-card">
         <div class="event-image">
-          <img [src]="event.image" alt="Event Image">
+          <img [src]="event.image" alt="Event Image" />
         </div>
         <div class="event-details">
           <h3>{{ event.title }}</h3>

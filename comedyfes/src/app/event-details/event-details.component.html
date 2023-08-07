@@ -1,29 +1,63 @@
 <div class="event-details">
-  <h2>{{ event?.title }}</h2>
   <div class="event-image">
     <!-- Use the safe URL for the image source -->
-    <img [src]="event.image" alt="Event Image" height="200">
-  </div>
-  <p class="description">{{ event?.description }}</p>
-  <div class="event-info">
-    <p>Venue: {{ event?.venue }}</p>
-    <p>Location: {{ event?.city }}, {{ event?.state }}, {{ event?.country }}</p>
-    <p>Date: {{ event?.start_date | date }} - {{ event?.end_date | date }}</p>
-    <p>Time: {{ event?.start_time }} - {{ event?.end_time }}</p>
-    <p>Ticket Price: ${{ event?.ticket_price }}</p>
-    <p>Ticket Quantity: {{ event?.ticket_quantity }}</p>
+    <img [src]="event.image" class="image" alt="Event Image" />
+    <div class="slide__darkbg"></div>
+    <div class="event-info-container">
+      <h2 class="event-title">{{ event?.title }}</h2>
+      <p class="event-date-time">
+        Date: {{ event?.start_date | date }} - {{ event?.end_date | date }}
+      </p>
+      <p class="event-venue">Ticket Price: ${{ event?.ticket_price }}</p>
+      <!-- Display the book now button only if the user is logged in -->
+      <button mat-raised-button color="primary" (click)="openBookingDialog()">
+        Book Now
+      </button>
+      <!-- If the user is not logged in, show a link to the login page -->
+      <ng-template #loginLink>
+        <p class="login-message">
+          You need to be logged in to book this event. Please
+          <a routerLink="/login">Login</a> or
+          <a routerLink="/signup">Sign Up</a>
+        </p>
+      </ng-template>
+    </div>
   </div>
 
-  <ng-container *ngIf="user; else loginLink">
-    <!-- Display the book now button only if the user is logged in -->
-    <button mat-raised-button color="primary" *ngIf="!showBookingForm" (click)="showBookingForm = true">Book Now</button>
-  </ng-container>
-  
-  <!-- If the user is not logged in, show a link to the login page -->
-  <ng-template #loginLink>
-    <p class="login-message">You need to be logged in to book this event. Please <a routerLink="/login">Login</a> or <a routerLink="/signup">Sign Up</a></p>
-  </ng-template>
-  
-  <!-- Booking Form -->
-  <app-booking-form *ngIf="showBookingForm" [event]="event" [user]="user" (closeForm)="showBookingForm = false"></app-booking-form>
+  <div class="event-description">
+    <p class="description">{{ event?.description }}</p>
+    <div class="event-info">
+      <p class="key">Tickets Left:</p>
+      <p>{{ event?.ticket_quantity }}</p>
+
+      <p class="key">Venue:</p>
+      <p>{{ event?.venue }}</p>
+
+      <p class="key">City:</p>
+      <p>{{ event?.city }}</p>
+
+      <p class="key">State:</p>
+      <p>{{ event?.state }}</p>
+
+      <p class="key">Country:</p>
+      <p>{{ event?.country }}</p>
+
+      <p class="key">Category:</p>
+      <p>{{ event?.category }}</p>
+    </div>
   </div>
+
+  <div class="events-section1">
+    <h2>Similar Events You Might Like</h2>
+    <div id="app" class="container">
+      <app-card
+        *ngFor="let event of similarEvents"
+        [dataImage]="event.image"
+        (click)="goToEventDetails(event._id)"
+      >
+        <h1 slot="header">{{ event.title }}</h1>
+        <p slot="content">{{ event.description }}</p>
+      </app-card>
+    </div>
+  </div>
+</div>

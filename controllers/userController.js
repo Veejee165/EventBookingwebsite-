@@ -20,6 +20,24 @@ exports.getUserById = async (req, res) => {
   }
 };
 
+exports.getUserByIdDirect = async (id) => {
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Check if the user is an admin
+    if (user.role !== 'admin') {
+      throw new Error('Access denied');
+    }
+
+    return user;
+  } catch (error) {
+    throw new Error('Failed to retrieve user');
+  }
+};
+
 // Update user details
 exports.updateUser = async (req, res) => {
   const { id } = req.params;

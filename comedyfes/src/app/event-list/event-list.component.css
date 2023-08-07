@@ -1,33 +1,33 @@
-/* Darker theme for the whole page */
+/* Light theme for the whole page */
 .container {
   font-family: Arial, sans-serif;
-  background-color: #222; /* Darker background color for the whole page */
-  color: #fff; /* White text color */
+  background-color: #f1f1f1; /* Lighter background color for the whole page */
+  color: #333; /* Darker text color */
   margin: 0;
   padding: 0;
 }
 
-/* Darker theme for event-list container */
+/* Light theme for event-list container */
 .content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #333; /* Darker background color */
+  background-color: #f9f9f9; /* Lighter background color */
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Darker box shadow */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Lighter box shadow */
 }
 
-/* Darker theme for h2 */
+/* Light theme for h2 */
 h2 {
   padding-left: 20px;
   padding-top: 30px;
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #fff; /* White text color */
+  color: #333; /* Darker text color */
 }
 
-/* Darker theme for search-bar */
+/* Light theme for search-bar */
 .search-bar {
   display: flex;
   justify-content: center;
@@ -41,8 +41,8 @@ h2 {
   margin-right: 10px;
   border: none;
   font-size: 16px;
-  background-color: #555; /* Darker input background color */
-  color: #fff; /* White text color */
+  background-color: #f1f1f1; /* Lighter input background color */
+  color: #333; /* Darker text color */
 }
 
 .search-bar button {
@@ -55,22 +55,22 @@ h2 {
   font-size: 16px;
 }
 
-/* Darker theme for event-item */
+/* Light theme for event-item */
 .event-item {
   margin-bottom: 20px;
 }
 
-/* Darker theme for event-card */
+/* Light theme for event-card */
 .event-card {
   display: flex;
   align-items: center;
-  background-color: #444; /* Darker background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Darker box shadow */
+  background-color: #f5f5f5; /* Lighter background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Lighter box shadow */
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* Darker theme for event-image */
+/* Light theme for event-image */
 .event-image {
   flex: 0 0 150px;
   height: 150px;
@@ -87,7 +87,7 @@ h2 {
   object-fit: cover;
 }
 
-/* Darker theme for event-details */
+/* Light theme for event-details */
 .event-details {
   padding: 20px;
   flex: 1;
@@ -96,16 +96,16 @@ h2 {
 .event-details h3 {
   font-size: 24px;
   margin-bottom: 10px;
-  color: #fff; /* White text color */
+  color: #333; /* Darker text color */
 }
 
 .event-details p {
   font-size: 16px;
   margin-bottom: 5px;
-  color: #ccc; /* Light gray text color */
+  color: #777; /* Lighter gray text color */
 }
 
-/* Darker theme for buttons */
+/* Light theme for buttons */
 button {
   background-color: #2196F3;
   color: #fff;
@@ -132,21 +132,21 @@ button:hover {
   }
 }
 
-/* Darker theme for dropdown */
+/* Light theme for dropdown */
 .search-bar select {
   flex: 1;
   padding: 8px;
   margin-right: 10px;
-  border: 1px solid #555; /* Darker border color */
+  border: 1px solid #f1f1f1; /* Lighter border color */
   border-radius: 4px;
   font-size: 14px;
-  background-color: #555; /* Darker dropdown background color */
-  color: #fff; /* White text color */
+  background-color: #f1f1f1; /* Lighter dropdown background color */
+  color: #333; /* Darker text color */
   appearance: none; /* Remove default arrow in some browsers */
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
-  background-image: linear-gradient(45deg, transparent 50%, #fff 50%), linear-gradient(135deg, #fff 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, #333 50%), linear-gradient(135deg, #333 50%, transparent 50%);
   background-position: calc(100% - 12px) 50%, calc(100% - 8px) 50%; /* Center the arrow vertically */
   background-size: 4px 4px, 4px 4px;
   background-repeat: no-repeat;
@@ -160,7 +160,7 @@ button:hover {
 
 .search-bar option {
   /* Styles for each dropdown option */
-  background-color: #555; /* Darker dropdown background color */
-  color: #fff; /* White text color */
+  background-color: #f1f1f1; /* Lighter dropdown background color */
+  color: #333; /* Darker text color */
   font-size: 14px;
 }

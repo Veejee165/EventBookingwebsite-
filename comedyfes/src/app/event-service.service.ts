@@ -4,29 +4,38 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventService {
   private baseUrl = 'http://localhost:5001/prac/events';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Get all events
-  getAllEvents(): Observable<any> {
+  getEvents(): Observable<any> {
     return this.http.get<any>(this.baseUrl);
+  }
+
+  getAllEvents(): Observable<any> {
+    return this.getEvents().pipe(
+      map((events: any[]) => {
+        return events.filter((event) => event.ticket_quantity >= 1);
+      })
+    );
   }
 
   getUpcomingEvents(): Observable<any[]> {
     return this.getAllEvents().pipe(
       map((events: any[]) => {
         const currentDate = new Date();
-        return events.filter(event => new Date(event.end_date) >= currentDate);
+        return events.filter(
+          (event) => new Date(event.end_date) >= currentDate
+        );
       })
     );
   }
 
-  getEventsbyCategory(category: string):Observable<any>{
-    return this.http.get<any>(`${this.baseUrl}/cat/${category}`)
+  getEventsbyCategory(category: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/cat/${category}`);
   }
   // Get event by ID
   getEventById(eventId: string): Observable<any> {
@@ -40,10 +49,10 @@ export class EventService {
     const payload = { ticket_quantity: -quantity };
     return this.http.put<any>(url, payload);
   }
+
   getEventImageById(eventId: string): Observable<Blob> {
     const url = `${this.baseUrl}/image/${eventId}`;
     const headers = new HttpHeaders({ 'Content-Type': 'image/jpeg' });
-    return this.http.get(url, { headers , responseType: 'blob' });
+    return this.http.get(url, { headers, responseType: 'blob' });
   }
-
 }
